@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produit — SNEAKERS WORLD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --white:#fff; --off:#f4f3f1; --light:#eeede9; --black:#111; --dark:#1c1c1c; --mid:#888; --border:#e0deda; --red:#e53030; --gold:#f0c040; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--white); color: var(--black); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* TICKER */
+    .announcement { background: var(--black); color: #fff; overflow: hidden; padding: 8px 0; }
+    .ticker-wrap { display: flex; overflow: hidden; }
+    .ticker { display: flex; gap: 80px; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker span { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+    .ticker span em { color: var(--gold); font-style: normal; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* NAV */
+    nav { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
+    .nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; }
+    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; }
+    .nav-logo span { color: var(--red); }
+    .nav-center { display: flex; }
+    .nav-center a { font-size: 13px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; padding: 26px 18px; border-bottom: 2px solid transparent; transition: border-color .2s; }
+    .nav-center a:hover { border-bottom-color: var(--black); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-right a { font-size: 13px; font-weight: 500; color: var(--mid); transition: color .2s; }
+    .nav-right a:hover { color: var(--black); }
+    .nav-cart { background: var(--black); color: #fff; padding: 10px 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; transition: background .2s; }
+    .nav-cart:hover { background: var(--red); }
+    .cart-count { background: var(--red); color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; }
+
+    /* BREADCRUMB */
+    .breadcrumb { padding: 16px 40px; font-size: 12px; color: var(--mid); display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--border); }
+    .breadcrumb a { transition: color .2s; }
+    .breadcrumb a:hover { color: var(--black); }
+    .breadcrumb span { color: var(--black); font-weight: 600; }
+
+    /* PRODUCT LAYOUT */
+    .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 1400px; margin: 0 auto; padding: 40px 40px 80px; gap: 60px; }
+
+    /* GALLERY */
+    .gallery { display: flex; flex-direction: column; gap: 16px; }
+    .gallery-main { aspect-ratio: 1/1; background: var(--off); overflow: hidden; position: relative; }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .gallery-main img:hover { transform: scale(1.04); }
+    .gallery-badge { position: absolute; top: 16px; left: 16px; background: var(--red); color: #fff; font-size: 12px; font-weight: 700; padding: 5px 12px; letter-spacing: .5px; }
+    .gallery-thumbs { display: flex; gap: 10px; }
+    .gallery-thumb { width: 80px; height: 80px; background: var(--off); cursor: pointer; overflow: hidden; border: 2px solid transparent; transition: border-color .2s; flex-shrink: 0; }
+    .gallery-thumb.active { border-color: var(--black); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* PRODUCT INFO */
+    .product-details { display: flex; flex-direction: column; }
+    .prod-brand { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+    .prod-name { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(32px, 3vw, 44px); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 16px; }
+    .prod-prices { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .prod-price { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 900; color: var(--black); }
+    .prod-was { font-size: 18px; color: var(--mid); text-decoration: line-through; }
+    .prod-save { background: var(--red); color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; }
+    .prod-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; font-size: 13px; color: var(--mid); }
+    .prod-stars { color: var(--gold); font-size: 14px; }
+    .prod-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+    .prod-promo { background: #fff8f8; border: 1px solid #fde0e0; padding: 14px 18px; display: flex; align-items: center; gap: 12px; font-size: 13px; margin-bottom: 24px; }
+    .prod-promo strong { color: var(--red); }
+
+    /* SIZE SELECTOR */
+    .size-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+    .size-label a { color: var(--mid); text-decoration: underline; font-weight: 400; }
+    .size-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .size-btn { width: 52px; height: 52px; border: 1.5px solid var(--border); background: var(--white); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; }
+    .size-btn:hover { border-color: var(--black); }
+    .size-btn.active { background: var(--black); color: #fff; border-color: var(--black); }
+    .size-btn.unavailable { opacity: .35; cursor: not-allowed; }
+
+    /* ADD TO CART */
+    .add-to-cart { width: 100%; background: var(--black); color: #fff; border: none; padding: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s; margin-bottom: 12px; }
+    .add-to-cart:hover { background: var(--red); }
+    .add-to-cart:disabled { background: var(--mid); cursor: not-allowed; }
+    .buy-now { width: 100%; background: var(--off); color: var(--black); border: 1.5px solid var(--border); padding: 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all .2s; }
+    .buy-now:hover { border-color: var(--black); background: var(--light); }
+
+    /* TRUST STRIP */
+    .trust-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 28px; }
+    .trust-item { background: var(--off); padding: 14px 16px; text-align: center; font-size: 12px; font-weight: 500; line-height: 1.4; }
+    .trust-item span { display: block; font-size: 18px; margin-bottom: 4px; }
+
+    /* TABS */
+    .tabs-section { max-width: 1400px; margin: 0 auto; padding: 0 40px 60px; }
+    .tabs-nav { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+    .tab-btn { padding: 16px 28px; font-size: 13px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; color: var(--mid); transition: all .2s; margin-bottom: -1px; }
+    .tab-btn.active { color: var(--black); border-bottom-color: var(--black); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .description-text { font-size: 15px; line-height: 1.8; color: var(--dark); max-width: 680px; }
+    .features-list { list-style: none; display: flex; flex-direction: column; gap: 12px; max-width: 480px; }
+    .features-list li { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    .features-list li::before { content: '✓'; color: var(--red); font-weight: 700; flex-shrink: 0; }
+
+    /* PRODUCT REVIEWS */
+    .reviews-grid-small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .review-card { background: var(--off); padding: 24px 20px; }
+    .review-stars { color: var(--gold); font-size: 13px; margin-bottom: 12px; }
+    .review-text { font-size: 13px; color: var(--dark); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+    .reviewer { font-size: 11px; color: var(--mid); }
+    .reviewer strong { color: var(--black); }
+
+    /* SIMILAR PRODUCTS */
+    .similar-section { background: var(--off); padding: 60px 40px; }
+    .similar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px; }
+    .product-card { background: var(--white); position: relative; overflow: hidden; cursor: pointer; transition: box-shadow .3s; }
+    .product-card:hover { box-shadow: 0 8px 40px rgba(0,0,0,.1); }
+    .product-img-wrap { position: relative; overflow: hidden; aspect-ratio: 1/1; background: var(--off); }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .35s, transform .4s; }
+    .img-hover { position: absolute; inset: 0; opacity: 0; }
+    .product-card:hover .img-hover { opacity: 1; }
+    .product-card:hover .img-main { transform: scale(1.03); }
+    .badge-promo { position: absolute; top: 10px; left: 10px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; }
+    .product-info { padding: 14px 16px 16px; border-top: 1px solid var(--border); }
+    .product-brand { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+    .product-name { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+    .product-prices { display: flex; align-items: center; gap: 8px; }
+    .price-sale { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; }
+    .price-was { font-size: 13px; color: var(--mid); text-decoration: line-through; }
+
+    /* SECTION HEADER */
+    .section-header { text-align: center; padding: 0 0 8px; }
+    .section-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(28px, 3vw, 40px); font-weight: 900; text-transform: uppercase; }
+    .section-header h2 em { color: var(--red); font-style: italic; }
+
+    /* FOOTER */
+    footer { background: var(--black); color: rgba(255,255,255,.7); }
+    .footer-bottom { padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,.08); }
+    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
+    .footer-logo span { color: var(--red); }
+    .footer-bottom p { font-size: 12px; }
+    .payment-icons { display: flex; gap: 8px; }
+    .pay-icon { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; }
+
+    /* NOTIF */
+    .notif { position: fixed; bottom: 30px; right: 30px; background: var(--black); color: #fff; padding: 16px 24px; font-size: 14px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .35s ease; z-index: 1000; border-left: 4px solid var(--red); max-width: 320px; }
+    .notif.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 1024px) {
+      .product-layout { grid-template-columns: 1fr; gap: 32px; padding: 24px 24px 60px; }
+      .similar-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid-small { grid-template-columns: 1fr 1fr; }
+      .nav-center { display: none; }
+    }
+    @media (max-width: 640px) {
+      .breadcrumb { padding: 12px 20px; }
+      .tabs-section { padding: 0 20px 40px; }
+      .similar-section { padding: 40px 20px; }
+      .reviews-grid-small { grid-template-columns: 1fr; }
+      .trust-strip { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; padding: 20px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="announcement">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>🔥 <em>-10% avec le code BIENVENU10</em></span>
+      <span>📦 Livraison offerte</span>
+      <span>⭐ +500 clients satisfaits</span>
+      <span>🔥 Stock limité</span>
+      <span>🔥 <em>-10% avec le code BIENVENU10</em></span>
+      <span>📦 Livraison offerte</span>
+      <span>⭐ +500 clients satisfaits</span>
+      <span>🔥 Stock limité</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a class="nav-logo" href="index.html">SNEAKERS <span>WORLD</span></a>
+    <div class="nav-center">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#best-sellers">Collections</a>
+      <a href="cart.html">Panier</a>
+    </div>
+    <div class="nav-right">
+      <a href="#">Connexion</a>
+      <a href="cart.html" class="nav-cart">
+        🛒 Panier <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">Accueil</a>
+  <span>/</span>
+  <a href="index.html#best-sellers">Collections</a>
+  <span>/</span>
+  <span id="breadcrumb-name">Produit</span>
+</div>
+
+<!-- PRODUCT LAYOUT -->
+<div class="product-layout">
+
+  <!-- GALLERY -->
+  <div class="gallery">
+    <div class="gallery-main">
+      <span class="gallery-badge" id="prod-badge"></span>
+      <img id="main-img" src="" alt="" />
+    </div>
+    <div class="gallery-thumbs" id="gallery-thumbs"></div>
+  </div>
+
+  <!-- PRODUCT DETAILS -->
+  <div class="product-details">
+    <div class="prod-brand" id="prod-brand"></div>
+    <div class="prod-name" id="prod-name"></div>
+    <div class="prod-prices">
+      <span class="prod-price" id="prod-price"></span>
+      <span class="prod-was" id="prod-was"></span>
+      <span class="prod-save" id="prod-save"></span>
+    </div>
+    <div class="prod-rating">
+      <span class="prod-stars">★★★★★</span>
+      <span>4.9 / 5 — 127 avis vérifiés</span>
+    </div>
+
+    <hr class="prod-divider" />
+
+    <div class="prod-promo">
+      🎁 Code <strong>BIENVENU10</strong> — 10% de réduction sur cette commande
+    </div>
+
+    <div class="size-label">
+      <span>Pointure</span>
+      <a href="#">Guide des tailles</a>
+    </div>
+    <div class="size-grid" id="size-grid">
+      <!-- injected by JS -->
+    </div>
+
+    <button class="add-to-cart" id="add-btn" onclick="addProduct()" disabled>
+      Sélectionner une pointure
+    </button>
+    <a href="checkout.html" class="buy-now" id="buy-now-btn" style="display:none">Acheter maintenant →</a>
+
+    <div class="trust-strip">
+      <div class="trust-item"><span>📦</span>Livraison offerte</div>
+      <div class="trust-item"><span>↩️</span>Retours 30 jours</div>
+      <div class="trust-item"><span>🔒</span>Paiement sécurisé</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-section">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="showTab('desc', this)">Description</button>
+    <button class="tab-btn" onclick="showTab('features', this)">Caractéristiques</button>
+    <button class="tab-btn" onclick="showTab('reviews', this)">Avis (127)</button>
+  </div>
+  <div class="tab-content active" id="tab-desc">
+    <p class="description-text" id="prod-description"></p>
+  </div>
+  <div class="tab-content" id="tab-features">
+    <ul class="features-list" id="prod-features"></ul>
+  </div>
+  <div class="tab-content" id="tab-reviews">
+    <div class="reviews-grid-small">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Qualité au rendez-vous, livraison rapide. Ces sneakers sont encore mieux en vrai qu'en photo !"</div>
+        <div class="reviewer"><strong>Lucas D.</strong> — Paris</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Je les porte tous les jours depuis 2 semaines. Confort incroyable, j'adore le coloris. Je recommande !"</div>
+        <div class="reviewer"><strong>Emma R.</strong> — Lyon</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Prix super attractif pour une qualité pareille. Sneakers World ne déçoit jamais. Déjà ma 3ème paire !"</div>
+        <div class="reviewer"><strong>Julien M.</strong> — Toulouse</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUITS SIMILAIRES -->
+<section class="similar-section">
+  <div class="section-header">
+    <h2>VOUS AIMEREZ <em>AUSSI</em></h2>
+  </div>
+  <div class="similar-grid" id="similar-grid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-logo">SNEAKERS <span>WORLD</span></div>
+    <p>© 2025 Sneakers World — Tous droits réservés</p>
+    <div class="payment-icons">
+      <div class="pay-icon">VISA</div>
+      <div class="pay-icon">MC</div>
+      <div class="pay-icon">PAYPAL</div>
+      <div class="pay-icon">AMEX</div>
+    </div>
+  </div>
+</footer>
+
+<div class="notif" id="notif"></div>
+
+<script src="products-data.js"></script>
+<script>
+  let selectedSize = null;
+  let currentProduct = null;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    Cart.updateCount();
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const product = PRODUCTS.find(p => p.id === id) || PRODUCTS[0];
+    currentProduct = product;
+    loadProduct(product);
+    loadSimilar(product);
+  });
+
+  function loadProduct(p) {
+    document.title = p.name + ' — SNEAKERS WORLD';
+    document.getElementById('breadcrumb-name').textContent = p.name;
+    document.getElementById('prod-brand').textContent = p.brand;
+    document.getElementById('prod-name').textContent = p.name;
+    document.getElementById('prod-price').textContent = fmtPrice(p.price);
+    if (p.priceWas) {
+      document.getElementById('prod-was').textContent = fmtPrice(p.priceWas);
+      document.getElementById('prod-save').textContent = '−' + p.discount + '%';
+    }
+    if (p.tag) document.getElementById('prod-badge').textContent = p.tag;
+    document.getElementById('prod-description').textContent = p.description;
+
+    const featuresList = document.getElementById('prod-features');
+    featuresList.innerHTML = (p.features || []).map(f => `<li>${f}</li>`).join('');
+
+    // Gallery
+    document.getElementById('main-img').src = p.img;
+    document.getElementById('main-img').alt = p.name;
+    const thumbs = document.getElementById('gallery-thumbs');
+    thumbs.innerHTML = p.gallery.map((src, i) => `
+      <div class="gallery-thumb ${i===0?'active':''}" onclick="setMainImg(this, '${src}')">
+        <img src="${src}" alt="${p.name} vue ${i+1}" />
+      </div>`).join('');
+
+    // Size grid
+    const sizes = ['38','39','40','41','42','43','44','45','46'];
+    const sizeGrid = document.getElementById('size-grid');
+    sizeGrid.innerHTML = sizes.map(s => `
+      <button class="size-btn" onclick="selectSize(this, '${s}')">${s}</button>`).join('');
+  }
+
+  function setMainImg(thumb, src) {
+    document.getElementById('main-img').src = src;
+    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+  }
+
+  function selectSize(btn, size) {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedSize = size;
+    const addBtn = document.getElementById('add-btn');
+    const buyNow = document.getElementById('buy-now-btn');
+    addBtn.disabled = false;
+    addBtn.textContent = 'Ajouter au panier — Pointure ' + size;
+    buyNow.style.display = 'block';
+  }
+
+  function addProduct() {
+    if (!selectedSize || !currentProduct) return;
+    Cart.add(currentProduct.id, selectedSize, 1);
+    showNotif(`✓ ${currentProduct.name} (${selectedSize}) ajouté au panier`);
+    Cart.updateCount();
+  }
+
+  function loadSimilar(current) {
+    const similar = PRODUCTS.filter(p => p.id !== current.id).slice(0, 4);
+    const grid = document.getElementById('similar-grid');
+    grid.innerHTML = similar.map(p => `
+      <div class="product-card" onclick="window.location.href='product.html?id=${p.id}'">
+        <div class="product-img-wrap">
+          ${p.discount ? `<span class="badge-promo">−${p.discount}%</span>` : ''}
+          <img class="img-main" src="${p.img}" alt="${p.name}" loading="lazy" />
+          <img class="img-hover" src="${p.imgHover}" alt="" loading="lazy" />
+        </div>
+        <div class="product-info">
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-prices">
+            <span class="price-sale">${fmtPrice(p.price)}</span>
+            ${p.priceWas ? `<span class="price-was">${fmtPrice(p.priceWas)}</span>` : ''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function fmtPrice(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+
+  function showNotif(msg) {
+    const el = document.getElementById('notif');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
