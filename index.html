@@ -3,400 +3,471 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SNEAKERS WORLD — Boutique Officielle</title>
+  <title>SNEAKERS WORLD : BOUTIQUE OFFICIELLE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --white: #ffffff; --off: #f4f3f1; --light: #eeede9; --black: #111111;
-      --dark: #1c1c1c; --mid: #888; --border: #e0deda; --red: #e53030; --gold: #f0c040;
+      --white: #ffffff;
+      --off: #f5f5f5;
+      --black: #111111;
+      --mid: #777;
+      --border: #e8e8e8;
+      --red: #e53030;
+      --gold: #f5c518;
+      --dark-bg: #1d1a2d;
     }
     html { scroll-behavior: smooth; }
     body { background: var(--white); color: var(--black); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
+    img { display: block; }
 
-    /* TICKER */
-    .announcement { background: var(--black); color: #fff; overflow: hidden; padding: 10px 0; }
-    .ticker-wrap { display: flex; overflow: hidden; }
-    .ticker { display: flex; gap: 80px; animation: ticker 28s linear infinite; white-space: nowrap; }
-    .ticker span { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
-    .ticker span em { color: var(--gold); font-style: normal; }
-    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    /* ===================== TICKER ===================== */
+    .ticker-bar { background: var(--black); overflow: hidden; padding: 10px 0; }
+    .ticker-inner { display: flex; white-space: nowrap; animation: tickerMove 30s linear infinite; }
+    .ticker-inner span { display: inline-flex; align-items: center; gap: 8px; padding: 0 48px; font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; }
+    .ticker-inner span .sep { color: var(--gold); margin: 0 8px; }
+    .ticker-inner em { color: var(--gold); font-style: normal; }
+    @keyframes tickerMove { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-    /* NAV */
-    nav { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
-    .nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; }
-    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; }
-    .nav-logo span { color: var(--red); }
-    .nav-center { display: flex; }
-    .nav-center a { font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 26px 18px; border-bottom: 2px solid transparent; transition: border-color .2s; }
-    .nav-center a:hover { border-bottom-color: var(--black); }
+    /* ===================== NAV ===================== */
+    .nav-wrapper { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 500; }
+    .nav-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; max-width: 1440px; margin: 0 auto; padding: 0 32px; height: 68px; }
+    .nav-left { display: flex; align-items: center; gap: 0; }
+    .nav-link { font-size: 12.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; padding: 24px 16px; color: var(--black); border-bottom: 2px solid transparent; transition: border-color .2s, color .2s; white-space: nowrap; }
+    .nav-link:hover { border-bottom-color: var(--black); }
+    .nav-logo-wrap { display: flex; justify-content: center; }
+    .nav-logo-wrap img { height: 44px; width: auto; }
+    .nav-right-icons { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+    .nav-icon-btn { background: none; border: none; cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--black); transition: color .2s; display: flex; align-items: center; gap: 6px; }
+    .nav-icon-btn:hover { color: var(--red); }
+    .nav-cart-btn { background: var(--black); color: #fff !important; padding: 10px 18px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; transition: background .2s; margin-left: 8px; }
+    .nav-cart-btn:hover { background: var(--red); }
+    .cart-count { background: var(--red); color: #fff; min-width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; padding: 0 3px; }
     .has-dropdown { position: relative; }
-    .dropdown { position: absolute; top: 100%; left: 0; background: var(--white); border: 1px solid var(--border); border-top: 2px solid var(--black); min-width: 220px; display: none; box-shadow: 0 12px 40px rgba(0,0,0,.08); z-index: 300; }
+    .dropdown { position: absolute; top: 100%; left: 0; background: #fff; border-top: 2px solid var(--black); border-bottom: 1px solid var(--border); border-left: 1px solid var(--border); border-right: 1px solid var(--border); min-width: 200px; display: none; z-index: 600; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
     .has-dropdown:hover .dropdown { display: block; }
-    .dropdown a { display: block; padding: 12px 20px; font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--border); transition: background .15s; }
-    .dropdown a:hover { background: var(--off); }
-    .nav-right { display: flex; align-items: center; gap: 20px; }
-    .nav-right a { font-size: 13px; font-weight: 500; color: var(--mid); transition: color .2s; }
-    .nav-right a:hover { color: var(--black); }
-    .nav-cart { background: var(--black); color: #fff; padding: 10px 20px; font-size: 13px; font-weight: 600; letter-spacing: .5px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; transition: background .2s; }
-    .nav-cart:hover { background: var(--red); }
-    .cart-count { background: var(--red); color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; }
+    .dropdown a { display: block; padding: 11px 20px; font-size: 12.5px; font-weight: 500; letter-spacing: .5px; text-transform: uppercase; border-bottom: 1px solid var(--border); transition: background .15s, color .15s; }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover { background: var(--off); color: var(--red); }
 
-    /* HERO */
-    .hero-banner { position: relative; overflow: hidden; background: #f0eeeb; }
-    .hero-banner img { width: 100%; display: block; max-height: 580px; object-fit: cover; object-position: center top; }
-    .hero-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 60px 80px; background: linear-gradient(to right, rgba(255,255,255,.85) 35%, transparent 70%); }
-    .hero-tag { background: var(--red); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; margin-bottom: 20px; display: inline-block; }
-    .hero-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(58px, 7vw, 96px); font-weight: 900; line-height: .9; letter-spacing: -1px; text-transform: uppercase; margin-bottom: 20px; }
-    .hero-title em { color: var(--red); font-style: normal; }
-    .hero-sub { font-size: 16px; color: var(--dark); margin-bottom: 36px; line-height: 1.5; }
-    .hero-cta { background: var(--black); color: #fff; padding: 16px 36px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: inline-block; transition: background .2s, transform .2s; }
-    .hero-cta:hover { background: var(--red); transform: translateY(-1px); }
+    /* ===================== HERO ===================== */
+    .hero { position: relative; overflow: hidden; background: var(--off); }
+    .hero a { display: block; }
+    .hero img { width: 100%; max-height: 600px; object-fit: cover; object-position: center; }
+    .hero-text-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 0 80px; background: linear-gradient(90deg, rgba(255,255,255,.78) 30%, transparent 65%); }
+    .hero-tag { display: inline-block; background: var(--red); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; margin-bottom: 18px; }
+    .hero-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(64px, 8vw, 110px); font-weight: 900; line-height: .88; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 18px; }
+    .hero-title em { color: var(--red); font-style: italic; }
+    .hero-sub { font-size: 15px; color: #333; line-height: 1.6; margin-bottom: 32px; max-width: 380px; }
+    .hero-btn { display: inline-block; background: var(--black); color: #fff; padding: 15px 36px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: background .2s, transform .15s; }
+    .hero-btn:hover { background: var(--red); transform: translateY(-1px); }
 
-    /* PROMO BAR */
-    .promo-bar { background: var(--off); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; justify-content: center; }
-    .promo-item { display: flex; align-items: center; gap: 10px; padding: 16px 40px; border-right: 1px solid var(--border); font-size: 13px; font-weight: 500; }
-    .promo-item:last-child { border-right: none; }
+    /* ===================== COUNTDOWN ===================== */
+    .countdown-section { background: var(--dark-bg); padding: 28px 40px; text-align: center; }
+    .countdown-label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 14px; }
+    .countdown-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(20px, 2.5vw, 28px); font-weight: 900; text-transform: uppercase; color: #fff; margin-bottom: 20px; letter-spacing: 1px; }
+    .countdown-title em { color: var(--gold); font-style: italic; }
+    .countdown-timer { display: flex; align-items: center; justify-content: center; gap: 0; }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; min-width: 72px; }
+    .cd-num { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 5vw, 58px); font-weight: 900; color: #fff; line-height: 1; }
+    .cd-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 4px; }
+    .cd-sep { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 900; color: var(--gold); padding: 0 4px; line-height: 1; padding-bottom: 16px; }
 
-    /* SECTION HEADER */
-    .section-header { text-align: center; padding: 60px 40px 36px; }
-    .section-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 4vw, 52px); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-    .section-header h2 em { color: var(--red); font-style: italic; }
-    .section-header p { color: var(--mid); font-size: 14px; margin-top: 8px; }
+    /* ===================== TRUST BAR ===================== */
+    .trust-bar { background: var(--white); border-bottom: 1px solid var(--border); display: flex; justify-content: center; }
+    .trust-item { display: flex; align-items: center; gap: 10px; padding: 15px 36px; border-right: 1px solid var(--border); font-size: 12.5px; font-weight: 600; letter-spacing: .3px; }
+    .trust-item:last-child { border-right: none; }
+    .trust-item .ti-icon { font-size: 17px; }
 
-    /* PRODUCT GRID */
-    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
-    .product-card { background: var(--white); position: relative; overflow: hidden; cursor: pointer; transition: box-shadow .3s; }
-    .product-card:hover { box-shadow: 0 8px 40px rgba(0,0,0,.12); z-index: 2; }
-    .product-img-wrap { position: relative; overflow: hidden; aspect-ratio: 1/1; background: var(--off); }
-    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .35s, transform .4s; }
-    .img-hover { position: absolute; inset: 0; opacity: 0; }
-    .product-card:hover .img-hover { opacity: 1; }
-    .product-card:hover .img-main { transform: scale(1.03); }
-    .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; letter-spacing: .5px; z-index: 2; }
-    .badge-new { position: absolute; top: 12px; left: 12px; background: var(--black); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; letter-spacing: .5px; z-index: 2; }
-    .product-info { padding: 18px 20px 20px; border-top: 1px solid var(--border); }
-    .product-brand { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
-    .product-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
-    .product-prices { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .price-sale { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; }
-    .price-was { font-size: 14px; color: var(--mid); text-decoration: line-through; }
-    .price-save { background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; }
-    .add-btn { width: 100%; margin-top: 14px; background: var(--black); color: #fff; border: none; padding: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s, background .2s; }
-    .product-card:hover .add-btn { opacity: 1; transform: translateY(0); }
-    .add-btn:hover { background: var(--red); }
+    /* ===================== SECTION HEADER ===================== */
+    .sec-head { text-align: center; padding: 56px 24px 32px; }
+    .sec-head h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(32px, 4vw, 52px); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; line-height: 1; }
+    .sec-head h2 em { color: var(--red); font-style: italic; }
+    .sec-head p { color: var(--mid); font-size: 14px; margin-top: 8px; }
+    .sec-divider { width: 48px; height: 3px; background: var(--red); margin: 16px auto 0; }
 
-    /* COLLECTIONS */
-    .collections-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 0 40px 60px; }
-    .collection-card { position: relative; overflow: hidden; aspect-ratio: 2/3; background: var(--light); cursor: pointer; display: block; }
-    .collection-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
-    .collection-card:hover img { transform: scale(1.06); }
-    .collection-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px 16px; }
-    .collection-card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; color: #fff; margin-bottom: 8px; }
-    .collection-card-cta { display: inline-block; background: #fff; color: var(--black); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; width: fit-content; transition: background .2s, color .2s; }
-    .collection-card:hover .collection-card-cta { background: var(--red); color: #fff; }
+    /* ===================== PRODUCTS GRID ===================== */
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); max-width: 1440px; margin: 0 auto; }
+    .product-card { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--white); cursor: pointer; position: relative; overflow: hidden; transition: box-shadow .25s; }
+    .product-card:hover { box-shadow: 0 6px 32px rgba(0,0,0,.10); z-index: 2; }
+    .prod-img-wrap { position: relative; overflow: hidden; aspect-ratio: 1; background: #f8f8f8; }
+    .prod-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: opacity .32s ease, transform .4s ease; }
+    .prod-img-hover { position: absolute; inset: 0; opacity: 0; }
+    .product-card:hover .prod-img-hover { opacity: 1; }
+    .product-card:hover .prod-img-main { transform: scale(1.04); }
+    .prod-badge { position: absolute; top: 12px; left: 12px; background: var(--red); color: #fff; font-size: 10.5px; font-weight: 800; padding: 4px 9px; letter-spacing: .5px; z-index: 2; }
+    .prod-info { padding: 16px 18px 20px; }
+    .prod-brand { font-size: 9.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
+    .prod-name { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; line-height: 1.1; }
+    .prod-prices { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .prod-price { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--black); }
+    .prod-was { font-size: 13px; color: var(--mid); text-decoration: line-through; }
+    .prod-save { font-size: 10px; font-weight: 800; color: var(--red); }
+    .prod-add-btn { width: 100%; margin-top: 12px; background: var(--black); color: #fff; border: none; padding: 11px; font-family: 'Barlow Condensed', sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; opacity: 0; transform: translateY(5px); transition: opacity .2s, transform .2s, background .2s; }
+    .product-card:hover .prod-add-btn { opacity: 1; transform: translateY(0); }
+    .prod-add-btn:hover { background: var(--red); }
 
-    /* INFLUENCEUR */
-    .influenceur-section { background: var(--black); color: #fff; display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; }
-    .influenceur-img { overflow: hidden; }
-    .influenceur-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .influenceur-text { display: flex; flex-direction: column; justify-content: center; padding: 60px 64px; }
-    .eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-    .influenceur-text h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 900; line-height: .95; text-transform: uppercase; margin-bottom: 24px; }
-    .influenceur-text h2 em { color: var(--gold); font-style: italic; }
-    .influenceur-text p { font-size: 15px; color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 32px; max-width: 440px; }
-    .trust-badges { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
-    .trust-badge { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; }
-    .trust-badge .icon { width: 36px; height: 36px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-    .influenceur-cta { background: var(--gold); color: var(--black); padding: 16px 32px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; display: inline-block; transition: transform .2s; }
-    .influenceur-cta:hover { transform: scale(1.03); }
+    /* ===================== COLLECTIONS ===================== */
+    .collections-wrap { max-width: 1440px; margin: 0 auto; padding: 0 32px 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .coll-card { position: relative; overflow: hidden; aspect-ratio: 3/4; cursor: pointer; background: var(--off); display: block; }
+    .coll-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+    .coll-card:hover img { transform: scale(1.07); }
+    .coll-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 18px; }
+    .coll-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: 1px; margin-bottom: 10px; line-height: 1; }
+    .coll-btn { display: inline-block; background: #fff; color: var(--black); font-size: 10.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 16px; width: fit-content; transition: background .2s, color .2s; }
+    .coll-card:hover .coll-btn { background: var(--red); color: #fff; }
 
-    /* REVIEWS */
-    .reviews-section { padding: 80px 40px; background: var(--off); }
-    .reviews-section .section-header { padding-top: 0; }
-    .reviews-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
-    .review-card { background: var(--white); padding: 28px 24px; border: 1px solid var(--border); }
-    .review-stars { color: var(--gold); font-size: 14px; margin-bottom: 14px; letter-spacing: 2px; }
-    .review-text { font-size: 14px; color: var(--dark); line-height: 1.65; margin-bottom: 20px; font-style: italic; }
-    .reviewer { font-size: 12px; color: var(--mid); display: flex; align-items: center; gap: 8px; }
-    .reviewer-dot { width: 28px; height: 28px; background: var(--black); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
-    .reviewer strong { color: var(--black); }
+    /* ===================== INFLUENCER SECTION ===================== */
+    .influencer-section { background: var(--dark-bg); display: grid; grid-template-columns: 1fr 1fr; min-height: 540px; }
+    .inf-photos { display: grid; grid-template-columns: 1fr 1fr; }
+    .inf-photo { overflow: hidden; }
+    .inf-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.88); transition: filter .3s; }
+    .inf-photo:hover img { filter: brightness(1); }
+    .inf-content { display: flex; flex-direction: column; justify-content: center; padding: 56px 64px; }
+    .inf-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .inf-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 4vw, 56px); font-weight: 900; text-transform: uppercase; line-height: .92; color: #fff; margin-bottom: 22px; }
+    .inf-title em { color: var(--gold); font-style: italic; }
+    .inf-text { font-size: 14.5px; color: rgba(255,255,255,.6); line-height: 1.75; margin-bottom: 30px; max-width: 420px; }
+    .inf-stats { display: flex; gap: 32px; margin-bottom: 36px; }
+    .inf-stat { display: flex; flex-direction: column; gap: 4px; }
+    .inf-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: var(--gold); line-height: 1; }
+    .inf-stat-label { font-size: 11px; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: 1.5px; }
+    .inf-btn { display: inline-block; background: var(--gold); color: var(--dark-bg); padding: 15px 32px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; transition: transform .2s; width: fit-content; }
+    .inf-btn:hover { transform: scale(1.03); }
 
-    /* FOOTER */
-    footer { background: var(--black); color: rgba(255,255,255,.7); }
-    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding: 60px 40px 40px; border-bottom: 1px solid rgba(255,255,255,.08); }
-    .footer-brand-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; color: #fff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
-    .footer-brand-name span { color: var(--red); }
-    .footer-desc { font-size: 13px; line-height: 1.7; margin-bottom: 24px; }
-    .socials { display: flex; gap: 10px; }
-    .social-icon { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: background .2s, border-color .2s; cursor: pointer; }
-    .social-icon:hover { background: var(--red); border-color: var(--red); color: #fff; }
-    .footer-col h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 20px; }
+    /* ===================== REVIEWS ===================== */
+    .reviews-section { background: var(--off); padding: 64px 32px; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 1440px; margin: 32px auto 0; }
+    .review-card { background: var(--white); padding: 26px 22px; border: 1px solid var(--border); }
+    .rv-stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+    .rv-text { font-size: 13.5px; color: #333; line-height: 1.68; margin-bottom: 18px; font-style: italic; }
+    .rv-author { display: flex; align-items: center; gap: 10px; }
+    .rv-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--black); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .rv-name { font-size: 12px; font-weight: 700; }
+    .rv-loc { font-size: 11px; color: var(--mid); }
+
+    /* ===================== FOOTER ===================== */
+    footer { background: var(--black); color: rgba(255,255,255,.65); }
+    .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; max-width: 1440px; margin: 0 auto; padding: 56px 32px 40px; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .footer-logo-wrap img { height: 36px; width: auto; margin-bottom: 16px; }
+    .footer-desc { font-size: 13px; line-height: 1.75; margin-bottom: 22px; max-width: 320px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .footer-social { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; cursor: pointer; transition: background .2s, border-color .2s; }
+    .footer-social:hover { background: var(--red); border-color: var(--red); color: #fff; }
+    .footer-col h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 18px; }
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-col li a { font-size: 13px; transition: color .2s; }
-    .footer-col li a:hover { color: #fff; }
-    .footer-bottom { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-col ul li a { font-size: 13px; transition: color .2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { max-width: 1440px; margin: 0 auto; padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; }
     .footer-bottom p { font-size: 12px; }
-    .payment-icons { display: flex; gap: 8px; }
-    .pay-icon { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; }
+    .footer-pay { display: flex; gap: 7px; }
+    .fpay { background: rgba(255,255,255,.08); color: rgba(255,255,255,.65); padding: 4px 10px; font-size: 11px; font-weight: 700; border-radius: 3px; letter-spacing: .5px; }
 
-    /* CART DRAWER */
-    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 400; opacity: 0; pointer-events: none; transition: opacity .3s; }
-    .cart-overlay.open { opacity: 1; pointer-events: all; }
-    .cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 420px; background: var(--white); z-index: 500; transform: translateX(100%); transition: transform .35s ease; display: flex; flex-direction: column; }
-    .cart-drawer.open { transform: translateX(0); }
-    .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 28px; border-bottom: 1px solid var(--border); }
-    .cart-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-    .cart-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--mid); transition: color .2s; }
-    .cart-close:hover { color: var(--black); }
-    .cart-body { flex: 1; overflow-y: auto; padding: 28px; }
-    .cart-empty { text-align: center; color: var(--mid); padding: 60px 0; }
-    .cart-empty-icon { font-size: 48px; margin-bottom: 16px; }
-    .cart-empty p { font-size: 15px; }
-    .cart-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
-    .cart-item-img { width: 80px; height: 80px; object-fit: cover; background: var(--off); flex-shrink: 0; }
-    .cart-item-details { flex: 1; }
-    .cart-item-brand { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); }
-    .cart-item-name { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; }
-    .cart-item-size { font-size: 12px; color: var(--mid); margin: 2px 0 4px; }
-    .cart-item-price { font-size: 15px; color: var(--red); font-weight: 700; }
-    .cart-item-remove { background: none; border: none; color: var(--mid); cursor: pointer; font-size: 11px; text-decoration: underline; margin-top: 4px; transition: color .2s; }
-    .cart-item-remove:hover { color: var(--red); }
-    .cart-footer { padding: 24px 28px; border-top: 1px solid var(--border); }
-    .cart-subtotal-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--mid); margin-bottom: 8px; }
-    .cart-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; margin-bottom: 20px; font-family: 'Barlow Condensed', sans-serif; }
-    .cart-checkout-btn { width: 100%; background: var(--black); color: #fff; border: none; padding: 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s; display: block; text-align: center; margin-bottom: 10px; }
-    .cart-checkout-btn:hover { background: var(--red); }
-    .cart-checkout-btn.red { background: var(--red); }
-    .cart-checkout-btn.red:hover { background: #c72020; }
-    .cart-continue-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--black); padding: 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: border-color .2s; }
-    .cart-continue-btn:hover { border-color: var(--black); }
+    /* ===================== CART DRAWER ===================== */
+    .cart-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 800; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cart-backdrop.open { opacity: 1; pointer-events: all; }
+    .cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 400px; background: var(--white); z-index: 900; transform: translateX(100%); transition: transform .32s ease; display: flex; flex-direction: column; }
+    .cart-drawer.open { transform: none; }
+    .cd-header { display: flex; justify-content: space-between; align-items: center; padding: 22px 26px; border-bottom: 1px solid var(--border); }
+    .cd-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+    .cd-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--mid); line-height: 1; transition: color .2s; }
+    .cd-close:hover { color: var(--black); }
+    .cd-body { flex: 1; overflow-y: auto; padding: 24px 26px; }
+    .cd-empty { text-align: center; padding: 48px 0; color: var(--mid); }
+    .cd-empty-icon { font-size: 44px; margin-bottom: 14px; }
+    .cd-empty p { font-size: 14px; }
+    .cd-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .cd-item:last-child { border-bottom: none; }
+    .cd-item-img { width: 72px; height: 72px; object-fit: cover; background: var(--off); flex-shrink: 0; }
+    .cd-item-info { flex: 1; }
+    .cd-item-brand { font-size: 9.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); }
+    .cd-item-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14.5px; font-weight: 800; text-transform: uppercase; }
+    .cd-item-size { font-size: 11.5px; color: var(--mid); margin: 2px 0 4px; }
+    .cd-item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; color: var(--red); }
+    .cd-item-remove { background: none; border: none; font-size: 11px; color: var(--mid); cursor: pointer; text-decoration: underline; display: block; margin-top: 3px; transition: color .2s; }
+    .cd-item-remove:hover { color: var(--red); }
+    .cd-footer { padding: 20px 26px; border-top: 1px solid var(--border); }
+    .cd-total { display: flex; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; margin-bottom: 16px; }
+    .cd-btn { width: 100%; padding: 16px; border: none; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: block; text-align: center; transition: background .2s; margin-bottom: 8px; }
+    .cd-btn-black { background: var(--black); color: #fff; }
+    .cd-btn-black:hover { background: #333; }
+    .cd-btn-red { background: var(--red); color: #fff; }
+    .cd-btn-red:hover { background: #c72020; }
+    .cd-continue { background: none; border: none; width: 100%; padding: 12px; font-size: 12.5px; color: var(--mid); cursor: pointer; transition: color .2s; }
+    .cd-continue:hover { color: var(--black); }
 
-    /* NOTIFICATION */
-    .notif { position: fixed; bottom: 30px; right: 30px; background: var(--black); color: #fff; padding: 16px 24px; font-size: 14px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .35s ease; z-index: 1000; border-left: 4px solid var(--red); max-width: 320px; }
-    .notif.show { transform: translateY(0); opacity: 1; }
+    /* ===================== NOTIFICATION ===================== */
+    .notif { position: fixed; bottom: 28px; right: 28px; background: var(--black); color: #fff; padding: 14px 22px; font-size: 13.5px; font-weight: 500; border-left: 4px solid var(--red); transform: translateY(70px); opacity: 0; transition: all .3s ease; z-index: 999; max-width: 300px; line-height: 1.4; }
+    .notif.show { transform: none; opacity: 1; }
 
-    /* RESPONSIVE */
-    @media (max-width: 1200px) { .collections-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 1024px) {
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1100px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); }
-      .collections-grid { grid-template-columns: repeat(2, 1fr); }
+      .collections-wrap { grid-template-columns: repeat(2, 1fr); }
       .reviews-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
-      .influenceur-section { grid-template-columns: 1fr; }
-      .influenceur-img { height: 320px; }
-      .nav-center { display: none; }
+      .footer-main { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .influencer-section { grid-template-columns: 1fr; }
+      .inf-photos { height: 340px; }
     }
-    @media (max-width: 640px) {
-      .nav-top { padding: 0 20px; }
-      .hero-overlay { padding: 40px 24px; background: linear-gradient(to right, rgba(255,255,255,.9) 60%, transparent 100%); }
-      .promo-bar { flex-direction: column; }
-      .promo-item { border-right: none; border-bottom: 1px solid var(--border); justify-content: center; padding: 14px 24px; }
-      .collections-grid { padding: 0 16px 40px; gap: 10px; grid-template-columns: repeat(2, 1fr); }
-      .section-header { padding: 40px 20px 24px; }
-      .footer-top { grid-template-columns: 1fr; padding: 40px 20px; gap: 32px; }
-      .footer-bottom { flex-direction: column; gap: 12px; padding: 20px; text-align: center; }
-      .influenceur-text { padding: 40px 24px; }
+    @media (max-width: 768px) {
+      .nav-inner { grid-template-columns: auto 1fr auto; padding: 0 16px; }
+      .nav-left { display: none; }
+      .nav-logo-wrap { justify-content: flex-start; }
+      .hero-text-overlay { padding: 32px 24px; background: linear-gradient(90deg, rgba(255,255,255,.9) 55%, transparent 100%); }
+      .trust-bar { flex-direction: column; }
+      .trust-item { border-right: none; border-bottom: 1px solid var(--border); justify-content: center; }
+      .trust-item:last-child { border-bottom: none; }
+      .collections-wrap { padding: 0 16px 48px; gap: 8px; }
+      .inf-content { padding: 36px 24px; }
+      .reviews-section { padding: 48px 16px; }
+      .footer-main { grid-template-columns: 1fr; padding: 40px 16px; gap: 28px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; padding: 16px; }
       .cart-drawer { width: 100%; }
-      .reviews-section { padding: 60px 20px; }
+    }
+    @media (max-width: 480px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
       .reviews-grid { grid-template-columns: 1fr; }
+      .countdown-timer { gap: 0; }
+      .cd-unit { min-width: 56px; }
     }
   </style>
 </head>
 <body>
 
-<!-- TICKER -->
-<div class="announcement">
-  <div class="ticker-wrap">
-    <div class="ticker">
-      <span>🔥 <em>-10% avec le code SAUCO10</em></span>
-      <span>📦 Livraison offerte dès 50€</span>
-      <span>⭐ Approuvé par +500 clients</span>
-      <span>🔥 Validé par les plus grands influenceurs</span>
-      <span>💳 Paiement sécurisé Visa / Mastercard / PayPal</span>
-      <span>🏃 Stock limité — commandez vite</span>
-      <span>🔥 <em>-10% avec le code SAUCO10</em></span>
-      <span>📦 Livraison offerte dès 50€</span>
-      <span>⭐ Approuvé par +500 clients</span>
-      <span>🔥 Validé par les plus grands influenceurs</span>
-      <span>💳 Paiement sécurisé Visa / Mastercard / PayPal</span>
-      <span>🏃 Stock limité — commandez vite</span>
-    </div>
+<!-- ===== TICKER ===== -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span>🔥 Stock limité disponible</span>
+    <span><span class="sep">|</span> ⭐ Approuvé par plus de 500 clients</span>
+    <span><span class="sep">|</span> 🔥 Validé par de nombreux influenceurs !</span>
+    <span><span class="sep">|</span> 🎁 <em>-10% avec le code BIENVENU10</em></span>
+    <span><span class="sep">|</span> 📦 LIVRAISON OFFERTE</span>
+    <span><span class="sep">|</span> 🔥 Stock limité disponible</span>
+    <span><span class="sep">|</span> ⭐ Approuvé par plus de 500 clients</span>
+    <span><span class="sep">|</span> 🔥 Validé par de nombreux influenceurs !</span>
+    <span><span class="sep">|</span> 🎁 <em>-10% avec le code BIENVENU10</em></span>
+    <span><span class="sep">|</span> 📦 LIVRAISON OFFERTE</span>
   </div>
 </div>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-top">
-    <a class="nav-logo" href="index.html">SNEAKERS <span>WORLD</span></a>
-    <div class="nav-center">
-      <a href="index.html">Accueil</a>
+<!-- ===== NAV ===== -->
+<div class="nav-wrapper">
+  <div class="nav-inner">
+    <!-- Left links -->
+    <div class="nav-left">
+      <a class="nav-link" href="index.html">Accueil</a>
       <div class="has-dropdown">
-        <a href="#">Collections ▾</a>
+        <a class="nav-link" href="#">Nos collections ▾</a>
         <div class="dropdown">
-          <a href="#">PROGRID OMNI 9 — Saucony</a>
-          <a href="#">GEL KAYANO 14 — Asics</a>
-          <a href="#">S X M — Salomon x Mizuno</a>
-          <a href="#">Nike Air Max 95</a>
-          <a href="#">New Balance 1906R</a>
-          <a href="#">Adidas Gazelle Bold</a>
-          <a href="#">Puma Speedcat</a>
+          <a href="#">PROGRID OMNI 9</a>
+          <a href="#">GEL KAYANO</a>
+          <a href="#">SALOMON</a>
+          <a href="#">ON</a>
+          <a href="#">MIND 001</a>
+          <a href="#">BEST SELLERS</a>
+          <a href="#">MIZUNO</a>
         </div>
       </div>
-      <a href="cart.html">Panier</a>
-      <a href="#">Suivi de commande</a>
     </div>
-    <div class="nav-right">
-      <a href="#">Connexion</a>
-      <button class="nav-cart" onclick="toggleCart()">
+    <!-- Logo centré -->
+    <div class="nav-logo-wrap">
+      <a href="index.html">
+        <img src="https://sneakerworld.fr/cdn/shop/files/logopng_1.png?v=1765902310&width=500" alt="Sneakers World" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
+        <span style="display:none; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; letter-spacing:2px; text-transform:uppercase;">SNEAKERS <span style="color:var(--red)">WORLD</span></span>
+      </a>
+    </div>
+    <!-- Right icons -->
+    <div class="nav-right-icons">
+      <a class="nav-icon-btn" href="#">Profil</a>
+      <a class="nav-icon-btn" href="#">Suivi</a>
+      <button class="nav-cart-btn" onclick="toggleCart()">
         🛒 Panier <span class="cart-count" id="cart-count">0</span>
       </button>
     </div>
   </div>
-</nav>
+</div>
 
-<!-- HERO BANNER -->
-<section class="hero-banner">
-  <img src="https://sneakerworld.fr/cdn/shop/files/sneakers_world_site.png?v=16519652693792835266" alt="Sneakers World" onerror="this.style.display='none'" />
-  <div class="hero-overlay">
-    <div class="hero-tag">🔥 Offre limitée</div>
-    <h1 class="hero-title">Best<br><em>Sellers</em><br>2025</h1>
-    <p class="hero-sub">Les paires approuvées par tes influenceurs.<br>Jusqu'à <strong>−50%</strong> — livraison offerte.</p>
-    <a class="hero-cta" href="#best-sellers">Voir les best sellers ↓</a>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <a href="#best-sellers">
+    <img src="https://sneakerworld.fr/cdn/shop/files/sneakers_world_site.png?v=16519652693792835266" alt="Sneakers World — Best Sellers" />
+  </a>
+  <div class="hero-text-overlay">
+    <span class="hero-tag">🔥 Stock limité</span>
+    <h1 class="hero-title">Best<br><em>Sellers</em></h1>
+    <p class="hero-sub">Les paires validées par tes influenceurs.<br>Jusqu'à <strong>−50%</strong> — Livraison offerte.</p>
+    <a class="hero-btn" href="#best-sellers">Découvrir ↓</a>
   </div>
 </section>
 
-<!-- PROMO BAR -->
-<div class="promo-bar">
-  <div class="promo-item">🎁 Code <strong style="margin-left:4px;color:var(--red)">SAUCO10</strong> — 10% offerts</div>
-  <div class="promo-item">📦 Livraison offerte incluse</div>
-  <div class="promo-item">⭐ +500 clients satisfaits</div>
-  <div class="promo-item">🔒 Paiement 100% sécurisé</div>
+<!-- ===== COUNTDOWN ===== -->
+<div class="countdown-section">
+  <div class="countdown-label">⏱ Offre exclusive</div>
+  <div class="countdown-title">PROFITE DE <em>-50%</em> AVANT LA FIN DU STOCK</div>
+  <div class="countdown-timer">
+    <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Jours</span></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Heures</span></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">Minutes</span></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">Secondes</span></div>
+  </div>
 </div>
 
-<!-- BEST SELLERS -->
-<div class="section-header" id="best-sellers">
+<!-- ===== TRUST BAR ===== -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="ti-icon">📦</span> Livraison offerte</div>
+  <div class="trust-item"><span class="ti-icon">🎁</span> Code <strong style="color:var(--red);margin-left:4px">BIENVENU10</strong> — 10% offerts</div>
+  <div class="trust-item"><span class="ti-icon">⭐</span> +500 clients satisfaits</div>
+  <div class="trust-item"><span class="ti-icon">🔒</span> Paiement 100% sécurisé</div>
+</div>
+
+<!-- ===== BEST SELLERS ===== -->
+<div class="sec-head" id="best-sellers">
   <h2>NOS <em>MEILLEURES</em> VENTES</h2>
-  <p>Les paires les plus demandées, à prix imbattables</p>
+  <p>Les paires les plus demandées — à prix imbattables</p>
+  <div class="sec-divider"></div>
 </div>
 
-<div class="products-grid" id="products-grid"></div>
+<div class="products-grid" id="products-grid">
+  <!-- injecté par JS -->
+</div>
 
-<!-- COLLECTIONS -->
-<div class="section-header">
-  <h2>NOS <em>COLLECTIONS</em></h2>
+<!-- ===== COLLECTIONS ===== -->
+<div class="sec-head">
+  <h2>Choisis ta <em>Collection</em></h2>
   <p>Explorer toutes nos marques exclusives</p>
+  <div class="sec-divider"></div>
 </div>
 
-<div class="collections-grid">
-  <a class="collection-card" href="#">
-    <img src="https://sneakerworld.fr/cdn/shop/files/saumon1.png?v=1765834464&width=533" alt="Saucony" />
-    <div class="collection-card-overlay">
-      <div class="collection-card-name">Saucony</div>
-      <div class="collection-card-cta">Explorer →</div>
+<div class="collections-wrap">
+  <a class="coll-card" href="#">
+    <img src="https://sneakerworld.fr/cdn/shop/collections/avis4_1.png?v=1765896986&width=1500" alt="PROGRID OMNI 9" />
+    <div class="coll-overlay">
+      <div class="coll-name">PROGRID OMNI 9</div>
+      <div class="coll-btn">Voir la collection →</div>
     </div>
   </a>
-  <a class="collection-card" href="#">
-    <img src="https://sneakerworld.fr/cdn/shop/files/asics1.png?v=1765892475&width=533" alt="Asics" />
-    <div class="collection-card-overlay">
-      <div class="collection-card-name">Asics</div>
-      <div class="collection-card-cta">Explorer →</div>
+  <a class="coll-card" href="#">
+    <img src="https://sneakerworld.fr/cdn/shop/collections/IMG-0211.png?v=1767999244&width=1500" alt="SALOMON" />
+    <div class="coll-overlay">
+      <div class="coll-name">SALOMON</div>
+      <div class="coll-btn">Voir la collection →</div>
     </div>
   </a>
-  <a class="collection-card" href="#">
-    <img src="https://sneakerworld.fr/cdn/shop/files/IMG-0221.png?v=1768000279&width=533" alt="Salomon" />
-    <div class="collection-card-overlay">
-      <div class="collection-card-name">Salomon</div>
-      <div class="collection-card-cta">Explorer →</div>
+  <a class="coll-card" href="#">
+    <img src="https://sneakerworld.fr/cdn/shop/collections/avis4_3.png?v=1765896956&width=1500" alt="GEL KAYANO" />
+    <div class="coll-overlay">
+      <div class="coll-name">GEL KAYANO</div>
+      <div class="coll-btn">Voir la collection →</div>
     </div>
   </a>
-  <a class="collection-card" href="#">
-    <img src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=533&q=80" alt="Adidas" />
-    <div class="collection-card-overlay">
-      <div class="collection-card-name">Adidas</div>
-      <div class="collection-card-cta">Explorer →</div>
-    </div>
-  </a>
-  <a class="collection-card" href="#">
-    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=533&q=80" alt="Nike" />
-    <div class="collection-card-overlay">
-      <div class="collection-card-name">Nike</div>
-      <div class="collection-card-cta">Explorer →</div>
+  <a class="coll-card" href="#">
+    <img src="https://sneakerworld.fr/cdn/shop/collections/IMG-0508.png?v=1772155608&width=1500" alt="ON" />
+    <div class="coll-overlay">
+      <div class="coll-name">ON</div>
+      <div class="coll-btn">Voir la collection →</div>
     </div>
   </a>
 </div>
 
-<!-- INFLUENCEUR -->
-<section class="influenceur-section">
-  <div class="influenceur-img">
-    <img src="https://images.unsplash.com/photo-1556906781-9a412961a28b?w=800&q=80" alt="Influenceur Sneakers" />
+<!-- ===== INFLUENCER / PROOF SECTION ===== -->
+<section class="influencer-section">
+  <!-- 4 photos produit/lifestyle en grille 2x2 -->
+  <div class="inf-photos">
+    <div class="inf-photo">
+      <img src="https://sneakerworld.fr/cdn/shop/files/saumon1.png?v=1765834464&width=533" alt="Saucony OMNI 9 Saumon" />
+    </div>
+    <div class="inf-photo">
+      <img src="https://sneakerworld.fr/cdn/shop/files/asics1.png?v=1765892475&width=533" alt="Asics Gel Kayano 14" />
+    </div>
+    <div class="inf-photo">
+      <img src="https://sneakerworld.fr/cdn/shop/files/IMG-0221.png?v=1768000279&width=533" alt="S X M Vanilla Ice" />
+    </div>
+    <div class="inf-photo">
+      <img src="https://sneakerworld.fr/cdn/shop/files/IMG-0158.png?v=1766433213&width=533" alt="Gel Kayano Blue Glow" />
+    </div>
   </div>
-  <div class="influenceur-text">
-    <div class="eyebrow">✦ Approuvé par les influenceurs</div>
-    <h2>Le <em>choix</em><br>des créateurs<br>de contenu</h2>
-    <p>Nos sneakers sont portées et validées par les plus grands créateurs de contenu. Rejoins une communauté de passionnés qui ne font aucun compromis sur le style.</p>
-    <div class="trust-badges">
-      <div class="trust-badge"><div class="icon">🏆</div>+500 clients satisfaits en France</div>
-      <div class="trust-badge"><div class="icon">🎥</div>Vues dans les vidéos des plus grands influenceurs</div>
-      <div class="trust-badge"><div class="icon">⚡</div>Stock limité — les paires partent vite</div>
+  <!-- Texte -->
+  <div class="inf-content">
+    <div class="inf-eyebrow">✦ Validé par nos influenceurs</div>
+    <h2 class="inf-title">La référence<br>des <em>Sneakers</em><br>en France</h2>
+    <p class="inf-text">Nos paires sont portées et recommandées par les plus grands créateurs de contenu. Rejoins une communauté de passionnés qui ne font aucun compromis sur le style et la qualité.</p>
+    <div class="inf-stats">
+      <div class="inf-stat">
+        <div class="inf-stat-num">500+</div>
+        <div class="inf-stat-label">Clients satisfaits</div>
+      </div>
+      <div class="inf-stat">
+        <div class="inf-stat-num">−50%</div>
+        <div class="inf-stat-label">Sur nos best sellers</div>
+      </div>
+      <div class="inf-stat">
+        <div class="inf-stat-num">⭐ 4.9</div>
+        <div class="inf-stat-label">Note moyenne</div>
+      </div>
     </div>
-    <a class="influenceur-cta" href="#best-sellers">Shopper maintenant</a>
+    <a class="inf-btn" href="#best-sellers">Shopper maintenant</a>
   </div>
 </section>
 
-<!-- AVIS CLIENTS -->
+<!-- ===== AVIS CLIENTS ===== -->
 <section class="reviews-section">
-  <div class="section-header">
+  <div class="sec-head" style="padding-top:0">
     <h2>CE QUE DISENT <em>NOS CLIENTS</em></h2>
     <p>Plus de 500 avis vérifiés ★★★★★</p>
+    <div class="sec-divider"></div>
   </div>
   <div class="reviews-grid">
     <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">"Les OMNI 9 Saumon sont incroyables. Confort au top, coloris parfait. J'ai reçu plein de compliments dès le premier jour !"</div>
-      <div class="reviewer"><div class="reviewer-dot">TK</div><div><strong>Thomas K.</strong> — Lyon</div></div>
+      <div class="rv-stars">★★★★★</div>
+      <div class="rv-text">"Les OMNI 9 Saumon sont incroyables. Confort au top, coloris parfait. J'ai reçu des compliments dès le premier jour !"</div>
+      <div class="rv-author"><div class="rv-avatar">TK</div><div><div class="rv-name">Thomas K.</div><div class="rv-loc">Lyon ✔ Achat vérifié</div></div></div>
     </div>
     <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">"Livraison ultra-rapide, emballage soigné. Les Gel Kayano 14 sont encore plus belles en vrai qu'en photo. Je recommande à 100% !"</div>
-      <div class="reviewer"><div class="reviewer-dot">SB</div><div><strong>Sofia B.</strong> — Paris</div></div>
+      <div class="rv-stars">★★★★★</div>
+      <div class="rv-text">"Livraison ultra-rapide, emballage soigné. Les Gel Kayano 14 sont encore plus belles en vrai qu'en photo. Je recommande à 100% !"</div>
+      <div class="rv-author"><div class="rv-avatar">SB</div><div><div class="rv-name">Sofia B.</div><div class="rv-loc">Paris ✔ Achat vérifié</div></div></div>
     </div>
     <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">"La collab Salomon x Mizuno est une pépite. Qualité premium, coloris unique. Impossible de trouver ça ailleurs à ce prix."</div>
-      <div class="reviewer"><div class="reviewer-dot">AM</div><div><strong>Alexandre M.</strong> — Bordeaux</div></div>
+      <div class="rv-stars">★★★★★</div>
+      <div class="rv-text">"La collab Salomon x Mizuno est une pépite. Qualité premium, coloris unique. Impossible de trouver ça ailleurs à ce prix."</div>
+      <div class="rv-author"><div class="rv-avatar">AM</div><div><div class="rv-name">Alexandre M.</div><div class="rv-loc">Bordeaux ✔ Achat vérifié</div></div></div>
     </div>
     <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">"Service client top, taille bien, et les Nike Air Max 95 sont une merveille. Mon deuxième achat ici, certainement pas le dernier !"</div>
-      <div class="reviewer"><div class="reviewer-dot">CL</div><div><strong>Camille L.</strong> — Marseille</div></div>
+      <div class="rv-stars">★★★★★</div>
+      <div class="rv-text">"Mon troisième achat ici et toujours aussi satisfait. Les OMNI 9 Miami sont parfaites pour l'été. Le service client est au top !"</div>
+      <div class="rv-author"><div class="rv-avatar">CL</div><div><div class="rv-name">Camille L.</div><div class="rv-loc">Marseille ✔ Achat vérifié</div></div></div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ===== FOOTER ===== -->
 <footer>
-  <div class="footer-top">
+  <div class="footer-main">
     <div>
-      <div class="footer-brand-name">SNEAKERS <span>WORLD</span></div>
-      <p class="footer-desc">La référence des sneakers exclusives en France. Des paires approuvées par les influenceurs, livrées directement chez vous à prix imbattables.</p>
-      <div class="socials">
-        <div class="social-icon">IG</div>
-        <div class="social-icon">TK</div>
-        <div class="social-icon">YT</div>
-        <div class="social-icon">FB</div>
+      <div class="footer-logo-wrap">
+        <img src="https://sneakerworld.fr/cdn/shop/files/logopng_1.png?v=1765902310&width=500" alt="Sneakers World" onerror="this.style.display='none'" style="filter:brightness(0) invert(1)" />
+      </div>
+      <p class="footer-desc">La référence des sneakers exclusives en France. Des paires validées par les influenceurs, livrées directement chez vous.</p>
+      <div class="footer-socials">
+        <div class="footer-social">FB</div>
+        <div class="footer-social">IG</div>
+        <div class="footer-social">TK</div>
+        <div class="footer-social">SC</div>
       </div>
     </div>
     <div class="footer-col">
       <h4>Collections</h4>
       <ul>
-        <li><a href="#">Saucony OMNI 9</a></li>
-        <li><a href="#">Asics Gel Kayano</a></li>
+        <li><a href="#">PROGRID OMNI 9</a></li>
+        <li><a href="#">GEL KAYANO 14</a></li>
         <li><a href="#">Salomon x Mizuno</a></li>
-        <li><a href="#">Nike Air Max 95</a></li>
-        <li><a href="#">New Balance 1906R</a></li>
+        <li><a href="#">ON</a></li>
+        <li><a href="#">MIND 001</a></li>
         <li><a href="#">Best Sellers</a></li>
       </ul>
     </div>
@@ -411,7 +482,7 @@
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Infos</h4>
+      <h4>Informations</h4>
       <ul>
         <li><a href="#">À propos</a></li>
         <li><a href="#">Mentions légales</a></li>
@@ -423,120 +494,141 @@
   </div>
   <div class="footer-bottom">
     <p>© 2025 Sneakers World — Tous droits réservés</p>
-    <div class="payment-icons">
-      <div class="pay-icon">VISA</div>
-      <div class="pay-icon">MC</div>
-      <div class="pay-icon">PAYPAL</div>
-      <div class="pay-icon">AMEX</div>
+    <div class="footer-pay">
+      <div class="fpay">VISA</div>
+      <div class="fpay">MC</div>
+      <div class="fpay">PAYPAL</div>
+      <div class="fpay">AMEX</div>
     </div>
   </div>
 </footer>
 
-<!-- CART DRAWER -->
-<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-backdrop" id="cart-backdrop" onclick="toggleCart()"></div>
 <div class="cart-drawer" id="cart-drawer">
-  <div class="cart-header">
+  <div class="cd-header">
     <h3>Mon panier (<span id="drawer-count">0</span>)</h3>
-    <button class="cart-close" onclick="toggleCart()">✕</button>
+    <button class="cd-close" onclick="toggleCart()">✕</button>
   </div>
-  <div class="cart-body" id="cart-body">
-    <div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Ton panier est vide</p></div>
+  <div class="cd-body" id="cd-body">
+    <div class="cd-empty"><div class="cd-empty-icon">🛒</div><p>Ton panier est vide</p></div>
   </div>
-  <div class="cart-footer" id="cart-footer" style="display:none">
-    <div class="cart-subtotal-row"><span>Sous-total</span><span id="drawer-subtotal">0,00 €</span></div>
-    <div class="cart-subtotal-row"><span>Livraison</span><span style="color:#22c55e">Offerte</span></div>
-    <div class="cart-total"><span>Total</span><span id="drawer-total">0,00 €</span></div>
-    <a href="cart.html" class="cart-checkout-btn">Voir le panier</a>
-    <a href="checkout.html" class="cart-checkout-btn red">Commander →</a>
-    <button class="cart-continue-btn" onclick="toggleCart()">Continuer mes achats</button>
+  <div id="cd-footer" style="display:none">
+    <div class="cd-footer">
+      <div class="cd-total"><span>Total</span><span id="drawer-total">0,00 €</span></div>
+      <a href="cart.html" class="cd-btn cd-btn-black">Voir le panier</a>
+      <a href="checkout.html" class="cd-btn cd-btn-red">Commander →</a>
+      <button class="cd-continue" onclick="toggleCart()">Continuer mes achats</button>
+    </div>
   </div>
 </div>
 
+<!-- ===== NOTIF ===== -->
 <div class="notif" id="notif"></div>
 
 <script src="products-data.js"></script>
 <script>
+  // ─── Countdown ───────────────────────────────────────────
+  (function countdown() {
+    const end = new Date();
+    end.setDate(end.getDate() + 3);
+    end.setHours(23, 59, 59, 0);
+    function tick() {
+      const diff = Math.max(0, end - Date.now());
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      const pad = n => String(n).padStart(2, '0');
+      document.getElementById('cd-days').textContent = pad(d);
+      document.getElementById('cd-hours').textContent = pad(h);
+      document.getElementById('cd-mins').textContent = pad(m);
+      document.getElementById('cd-secs').textContent = pad(s);
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // ─── Init ─────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     Cart.updateCount();
-    renderProductGrid();
+    renderGrid();
   });
 
-  function renderProductGrid() {
+  // ─── Product Grid ─────────────────────────────────────────
+  function renderGrid() {
     const grid = document.getElementById('products-grid');
-    grid.innerHTML = PRODUCTS.map(p => {
-      const isNew = ['NOUVEAU','COLLAB','TENDANCE 2025','EXCLUSIF','ICONIQUE'].includes(p.tag);
-      return `
-      <div class="product-card" onclick="window.location.href='product.html?id=${p.id}'">
-        <div class="product-img-wrap">
-          ${p.tag ? `<span class="${isNew ? 'badge-new' : 'badge-promo'}">${p.tag}</span>` : ''}
-          <img class="img-main" src="${p.img}" alt="${p.name}" loading="lazy" />
-          <img class="img-hover" src="${p.imgHover}" alt="" loading="lazy" />
+    grid.innerHTML = PRODUCTS.map(p => `
+      <div class="product-card" onclick="goProduct('${p.id}')">
+        <div class="prod-img-wrap">
+          <span class="prod-badge">${p.tag}</span>
+          <img class="prod-img-main" src="${p.img}" alt="${p.name}" loading="lazy" />
+          <img class="prod-img-hover" src="${p.imgHover}" alt="" loading="lazy" />
         </div>
-        <div class="product-info">
-          <div class="product-brand">${p.brand}</div>
-          <div class="product-name">${p.name}</div>
-          <div class="product-prices">
-            <span class="price-sale">${fmtPrice(p.price)}</span>
-            ${p.priceWas ? `<span class="price-was">${fmtPrice(p.priceWas)}</span>` : ''}
-            ${p.discount ? `<span class="price-save">−${p.discount}%</span>` : ''}
+        <div class="prod-info">
+          <div class="prod-brand">${p.brand}</div>
+          <div class="prod-name">${p.name}</div>
+          <div class="prod-prices">
+            <span class="prod-price">${fmt(p.price)}</span>
+            <span class="prod-was">${fmt(p.priceWas)}</span>
+            <span class="prod-save">−${p.discount}%</span>
           </div>
-          <button class="add-btn" onclick="event.stopPropagation(); quickAdd('${p.id}')">Ajouter au panier</button>
+          <button class="prod-add-btn" onclick="event.stopPropagation(); quickAdd('${p.id}')">
+            Ajouter au panier
+          </button>
         </div>
-      </div>`;
-    }).join('');
+      </div>`).join('');
   }
 
-  function quickAdd(productId) {
-    Cart.add(productId, '42', 1);
-    const p = PRODUCTS.find(x => x.id === productId);
-    showNotif(`✓ ${p.name} ajouté au panier`);
+  function goProduct(id) { window.location.href = 'product.html?id=' + id; }
+
+  function quickAdd(id) {
+    Cart.add(id, '42', 1);
+    const p = PRODUCTS.find(x => x.id === id);
+    showNotif('✓ ' + p.name + ' ajouté au panier');
     renderDrawer();
   }
 
+  // ─── Cart Drawer ──────────────────────────────────────────
   function toggleCart() {
     const drawer = document.getElementById('cart-drawer');
-    const overlay = document.getElementById('cart-overlay');
+    const backdrop = document.getElementById('cart-backdrop');
     const open = drawer.classList.contains('open');
     if (!open) renderDrawer();
     drawer.classList.toggle('open');
-    overlay.classList.toggle('open');
+    backdrop.classList.toggle('open');
     document.body.style.overflow = open ? '' : 'hidden';
   }
 
   function renderDrawer() {
     const cart = Cart.get();
-    const body = document.getElementById('cart-body');
-    const footer = document.getElementById('cart-footer');
+    const body = document.getElementById('cd-body');
+    const footer = document.getElementById('cd-footer');
     document.getElementById('drawer-count').textContent = Cart.count();
-    const total = Cart.total();
-    document.getElementById('drawer-subtotal').textContent = fmtPrice(total);
-    document.getElementById('drawer-total').textContent = fmtPrice(total);
-
+    document.getElementById('drawer-total').textContent = fmt(Cart.total());
     if (!cart.length) {
-      body.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Ton panier est vide</p></div>';
+      body.innerHTML = '<div class="cd-empty"><div class="cd-empty-icon">🛒</div><p>Ton panier est vide</p></div>';
       footer.style.display = 'none';
       return;
     }
     footer.style.display = 'block';
     body.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <img class="cart-item-img" src="${item.img}" alt="${item.name}" />
-        <div class="cart-item-details">
-          <div class="cart-item-brand">${item.brand}</div>
-          <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-size">Pointure : ${item.size} — Qté : ${item.qty}</div>
-          <div class="cart-item-price">${fmtPrice(item.price * item.qty)}</div>
-          <button class="cart-item-remove" onclick="removeItem('${item.key}')">Supprimer</button>
+      <div class="cd-item">
+        <img class="cd-item-img" src="${item.img}" alt="${item.name}" />
+        <div class="cd-item-info">
+          <div class="cd-item-brand">${item.brand}</div>
+          <div class="cd-item-name">${item.name}</div>
+          <div class="cd-item-size">Pointure : ${item.size} — Qté : ${item.qty}</div>
+          <div class="cd-item-price">${fmt(item.price * item.qty)}</div>
+          <button class="cd-item-remove" onclick="removeItem('${item.key}')">Supprimer</button>
         </div>
       </div>`).join('');
   }
 
-  function removeItem(key) {
-    Cart.remove(key);
-    renderDrawer();
-  }
+  function removeItem(key) { Cart.remove(key); renderDrawer(); }
 
-  function fmtPrice(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+  // ─── Helpers ──────────────────────────────────────────────
+  function fmt(n) { return Number(n).toFixed(2).replace('.', ',') + ' €'; }
 
   function showNotif(msg) {
     const el = document.getElementById('notif');
