@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Panier — SNEAKERS WORLD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --white:#fff; --off:#f4f3f1; --light:#eeede9; --black:#111; --dark:#1c1c1c; --mid:#888; --border:#e0deda; --red:#e53030; --gold:#f0c040; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--off); color: var(--black); font-family: 'Barlow', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+
+    /* TICKER */
+    .announcement { background: var(--black); color: #fff; overflow: hidden; padding: 8px 0; }
+    .ticker-wrap { display: flex; overflow: hidden; }
+    .ticker { display: flex; gap: 80px; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker span { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+    .ticker span em { color: var(--gold); font-style: normal; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* NAV */
+    nav { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
+    .nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; }
+    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; }
+    .nav-logo span { color: var(--red); }
+    .nav-center { display: flex; }
+    .nav-center a { font-size: 13px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; padding: 26px 18px; border-bottom: 2px solid transparent; transition: border-color .2s; }
+    .nav-center a:hover { border-bottom-color: var(--black); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-right a { font-size: 13px; font-weight: 500; color: var(--mid); transition: color .2s; }
+    .nav-cart { background: var(--black); color: #fff !important; padding: 10px 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; }
+    .cart-count { background: var(--red); color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; }
+
+    /* PROGRESS STEPS */
+    .checkout-steps { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; }
+    .steps { display: flex; align-items: center; justify-content: center; gap: 0; max-width: 600px; margin: 0 auto; padding: 20px 0; }
+    .step { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--mid); }
+    .step.active { color: var(--black); }
+    .step.done { color: var(--red); }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .step.active .step-num { background: var(--black); color: #fff; border-color: var(--black); }
+    .step.done .step-num { background: var(--red); color: #fff; border-color: var(--red); }
+    .step-sep { width: 60px; height: 1px; background: var(--border); margin: 0 8px; }
+
+    /* LAYOUT */
+    .cart-layout { max-width: 1200px; margin: 0 auto; padding: 40px 40px 80px; display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+
+    /* CART ITEMS */
+    .cart-card { background: var(--white); padding: 28px; }
+    .cart-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+    .cart-card-title span { font-size: 14px; font-weight: 400; color: var(--mid); font-family: 'Barlow', sans-serif; text-transform: none; letter-spacing: 0; }
+    .cart-empty-state { text-align: center; padding: 60px 40px; color: var(--mid); }
+    .cart-empty-state .icon { font-size: 60px; margin-bottom: 20px; }
+    .cart-empty-state h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; color: var(--black); }
+    .cart-empty-state p { font-size: 14px; margin-bottom: 24px; }
+    .btn-shop { display: inline-block; background: var(--black); color: #fff; padding: 14px 32px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+    .btn-shop:hover { background: var(--red); }
+
+    .cart-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-img { width: 100px; height: 100px; object-fit: cover; background: var(--off); flex-shrink: 0; }
+    .cart-item-details { flex: 1; }
+    .cart-item-brand { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+    .cart-item-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+    .cart-item-size { font-size: 12px; color: var(--mid); margin-bottom: 10px; }
+    .cart-item-bottom { display: flex; align-items: center; justify-content: space-between; }
+    .qty-control { display: flex; align-items: center; gap: 0; border: 1px solid var(--border); }
+    .qty-btn { width: 36px; height: 36px; background: none; border: none; cursor: pointer; font-size: 18px; font-weight: 300; transition: background .2s; display: flex; align-items: center; justify-content: center; }
+    .qty-btn:hover { background: var(--off); }
+    .qty-val { width: 40px; height: 36px; text-align: center; border: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; background: var(--white); }
+    .cart-item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; }
+    .cart-item-remove { background: none; border: none; color: var(--mid); cursor: pointer; font-size: 11px; text-decoration: underline; margin-top: 6px; display: block; transition: color .2s; }
+    .cart-item-remove:hover { color: var(--red); }
+
+    /* ORDER SUMMARY */
+    .summary-card { background: var(--white); padding: 28px; height: fit-content; position: sticky; top: 90px; }
+    .summary-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; }
+    .summary-row.total { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--black); margin-bottom: 0; }
+    .summary-row .label { color: var(--mid); }
+    .summary-row.total .label, .summary-row.total .value { color: var(--black); }
+    .free-ship { color: #22c55e; font-weight: 600; }
+    .promo-discount { color: var(--red); font-weight: 600; }
+
+    .promo-section { margin: 20px 0; }
+    .promo-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .promo-input-wrap { display: flex; gap: 8px; }
+    .promo-input { flex: 1; border: 1.5px solid var(--border); padding: 12px 14px; font-size: 13px; font-family: 'Barlow', sans-serif; outline: none; transition: border-color .2s; }
+    .promo-input:focus { border-color: var(--black); }
+    .promo-input.valid { border-color: #22c55e; }
+    .promo-input.invalid { border-color: var(--red); }
+    .promo-apply { background: var(--black); color: #fff; border: none; padding: 12px 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    .promo-apply:hover { background: var(--red); }
+    .promo-msg { font-size: 12px; margin-top: 8px; }
+    .promo-msg.ok { color: #22c55e; }
+    .promo-msg.err { color: var(--red); }
+
+    .checkout-btn { width: 100%; background: var(--red); color: #fff; border: none; padding: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s; display: block; text-align: center; margin-top: 20px; }
+    .checkout-btn:hover { background: #c72020; }
+    .secure-badges { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 16px; }
+    .secure-badge { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--mid); }
+
+    /* FOOTER */
+    footer { background: var(--black); color: rgba(255,255,255,.7); }
+    .footer-bottom { padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
+    .footer-logo span { color: var(--red); }
+    .footer-bottom p { font-size: 12px; }
+    .payment-icons { display: flex; gap: 8px; }
+    .pay-icon { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; }
+
+    @media (max-width: 1024px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .summary-card { position: static; }
+      .nav-center { display: none; }
+    }
+    @media (max-width: 640px) {
+      .cart-layout { padding: 20px 16px 60px; }
+      .cart-card { padding: 20px 16px; }
+      .summary-card { padding: 20px 16px; }
+      .steps { gap: 0; }
+      .step-sep { width: 30px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="announcement">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>🔥 <em>-10% avec le code BIENVENU10</em></span>
+      <span>📦 Livraison offerte</span>
+      <span>⭐ +500 clients satisfaits</span>
+      <span>🔥 Stock limité</span>
+      <span>🔥 <em>-10% avec le code BIENVENU10</em></span>
+      <span>📦 Livraison offerte</span>
+      <span>⭐ +500 clients satisfaits</span>
+      <span>🔥 Stock limité</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a class="nav-logo" href="index.html">SNEAKERS <span>WORLD</span></a>
+    <div class="nav-center">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#best-sellers">Collections</a>
+      <a href="cart.html" style="border-bottom:2px solid var(--black)">Panier</a>
+    </div>
+    <div class="nav-right">
+      <a href="#">Connexion</a>
+      <a href="cart.html" class="nav-cart">
+        🛒 Panier <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- CHECKOUT STEPS -->
+<div class="checkout-steps">
+  <div class="steps">
+    <div class="step active">
+      <div class="step-num">1</div>
+      <span>Panier</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <span>Livraison</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <span>Paiement</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <span>Confirmation</span>
+    </div>
+  </div>
+</div>
+
+<!-- CART LAYOUT -->
+<div class="cart-layout">
+
+  <!-- CART ITEMS -->
+  <div class="cart-card">
+    <div class="cart-card-title">
+      Mon panier
+      <span id="item-count-label"></span>
+    </div>
+    <div id="cart-items-container"></div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="summary-card">
+    <div class="summary-title">Récapitulatif</div>
+
+    <div class="summary-row">
+      <span class="label">Sous-total</span>
+      <span id="subtotal">0,00 €</span>
+    </div>
+    <div class="summary-row" id="discount-row" style="display:none">
+      <span class="label">Code promo</span>
+      <span class="promo-discount" id="discount-val">−0,00 €</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Livraison</span>
+      <span class="free-ship">Offerte</span>
+    </div>
+    <div class="summary-row total">
+      <span class="label">Total</span>
+      <span id="total-val">0,00 €</span>
+    </div>
+
+    <!-- PROMO CODE -->
+    <div class="promo-section">
+      <div class="promo-label">Code promo</div>
+      <div class="promo-input-wrap">
+        <input type="text" class="promo-input" id="promo-input" placeholder="BIENVENU10" />
+        <button class="promo-apply" onclick="applyPromo()">Appliquer</button>
+      </div>
+      <div class="promo-msg" id="promo-msg"></div>
+    </div>
+
+    <a href="checkout.html" class="checkout-btn" id="checkout-link">Commander →</a>
+
+    <div class="secure-badges">
+      <div class="secure-badge">🔒 Paiement sécurisé</div>
+      <div class="secure-badge">📦 Livraison offerte</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-logo">SNEAKERS <span>WORLD</span></div>
+    <p>© 2025 Sneakers World — Tous droits réservés</p>
+    <div class="payment-icons">
+      <div class="pay-icon">VISA</div>
+      <div class="pay-icon">MC</div>
+      <div class="pay-icon">PAYPAL</div>
+      <div class="pay-icon">AMEX</div>
+    </div>
+  </div>
+</footer>
+
+<script src="products-data.js"></script>
+<script>
+  let promoApplied = false;
+  let promoRate = 0;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    Cart.updateCount();
+    renderCart();
+  });
+
+  function renderCart() {
+    const cart = Cart.get();
+    const container = document.getElementById('cart-items-container');
+    const label = document.getElementById('item-count-label');
+    label.textContent = cart.reduce((s, i) => s + i.qty, 0) + ' article(s)';
+
+    if (!cart.length) {
+      container.innerHTML = `
+        <div class="cart-empty-state">
+          <div class="icon">🛒</div>
+          <h3>Votre panier est vide</h3>
+          <p>Découvrez nos paires exclusives et trouvez votre bonheur.</p>
+          <a class="btn-shop" href="index.html">Voir les produits</a>
+        </div>`;
+      document.getElementById('checkout-link').style.opacity = '.5';
+      document.getElementById('checkout-link').style.pointerEvents = 'none';
+      updateTotals(cart);
+      return;
+    }
+
+    container.innerHTML = cart.map(item => `
+      <div class="cart-item" id="item-${item.key.replace(/[^a-z0-9]/gi,'_')}">
+        <img class="cart-item-img" src="${item.img}" alt="${item.name}" />
+        <div class="cart-item-details">
+          <div class="cart-item-brand">${item.brand}</div>
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-size">Pointure : ${item.size}</div>
+          <div class="cart-item-bottom">
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty('${item.key}', ${item.qty - 1})">−</button>
+              <input class="qty-val" type="number" value="${item.qty}" min="1" max="10" onchange="changeQty('${item.key}', parseInt(this.value)||1)" />
+              <button class="qty-btn" onclick="changeQty('${item.key}', ${item.qty + 1})">+</button>
+            </div>
+            <div class="cart-item-price">${fmtPrice(item.price * item.qty)}</div>
+          </div>
+          <button class="cart-item-remove" onclick="removeCartItem('${item.key}')">Supprimer</button>
+        </div>
+      </div>`).join('');
+
+    updateTotals(cart);
+  }
+
+  function changeQty(key, qty) {
+    if (qty < 1) { removeCartItem(key); return; }
+    if (qty > 10) qty = 10;
+    Cart.updateQty(key, qty);
+    renderCart();
+  }
+
+  function removeCartItem(key) {
+    Cart.remove(key);
+    renderCart();
+  }
+
+  function applyPromo() {
+    const code = document.getElementById('promo-input').value.trim().toUpperCase();
+    const input = document.getElementById('promo-input');
+    const msg = document.getElementById('promo-msg');
+    if (code === 'BIENVENU10') {
+      promoApplied = true;
+      promoRate = 0.10;
+      input.classList.add('valid');
+      input.classList.remove('invalid');
+      msg.className = 'promo-msg ok';
+      msg.textContent = '✓ Code BIENVENU10 appliqué — 10% de réduction';
+      localStorage.setItem('sw_promo', JSON.stringify({ code, rate: promoRate }));
+      renderCart();
+    } else {
+      promoApplied = false;
+      promoRate = 0;
+      input.classList.add('invalid');
+      input.classList.remove('valid');
+      msg.className = 'promo-msg err';
+      msg.textContent = '✗ Code invalide';
+    }
+  }
+
+  function updateTotals(cart) {
+    // Restore saved promo
+    const savedPromo = JSON.parse(localStorage.getItem('sw_promo') || 'null');
+    if (savedPromo) {
+      promoApplied = true;
+      promoRate = savedPromo.rate;
+      document.getElementById('promo-input').value = savedPromo.code;
+      document.getElementById('promo-input').classList.add('valid');
+      const msg = document.getElementById('promo-msg');
+      msg.className = 'promo-msg ok';
+      msg.textContent = `✓ Code ${savedPromo.code} appliqué — ${Math.round(savedPromo.rate * 100)}% de réduction`;
+    }
+
+    const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const discount = promoApplied ? sub * promoRate : 0;
+    const total = sub - discount;
+
+    document.getElementById('subtotal').textContent = fmtPrice(sub);
+    document.getElementById('total-val').textContent = fmtPrice(total);
+
+    const discRow = document.getElementById('discount-row');
+    if (discount > 0) {
+      discRow.style.display = 'flex';
+      document.getElementById('discount-val').textContent = '−' + fmtPrice(discount);
+    } else {
+      discRow.style.display = 'none';
+    }
+  }
+
+  function fmtPrice(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+</script>
+</body>
+</html>
