@@ -193,49 +193,102 @@
     .mob-cart-badge { background: var(--red); color: #fff; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; margin-left: 10px; }
     .mob-footer-bar { padding: 16px 24px; border-top: 1px solid var(--border); font-size: 11px; color: var(--mid); text-align: center; }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE — TABLETTE */
     @media (max-width: 1024px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); }
       .collections-grid { grid-template-columns: repeat(2, 1fr); }
       .reviews-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
       .influenceur-section { grid-template-columns: 1fr; }
-      .influenceur-img { height: 320px; }
+      .influenceur-img { height: 340px; }
       .nav-center { display: none; }
       .hamburger { display: flex; }
       .nav-connexion { display: none; }
     }
-    @media (max-width: 640px) {
-      .nav-top { padding: 0 16px; height: 64px; }
-      .nav-logo { font-size: 21px; }
-      .nav-cart { padding: 9px 14px; font-size: 12px; }
-      .hero-overlay { padding: 28px 20px; }
-      .hero-title { font-size: clamp(44px, 12vw, 70px); }
-      .hero-sub { font-size: 13px; margin-bottom: 24px; }
-      .hero-cta { padding: 14px 28px; font-size: 13px; }
-      .promo-bar { flex-direction: column; }
-      .promo-item { border-right: none; border-bottom: 1px solid var(--border); justify-content: center; padding: 12px 20px; font-size: 12px; }
-      .products-grid { grid-template-columns: repeat(2, 1fr); }
-      .add-btn { opacity: 1 !important; transform: none !important; padding: 11px 8px; font-size: 11px; letter-spacing: .8px; }
-      .product-info { padding: 14px 14px 16px; }
-      .product-name { font-size: 15px; }
-      .price-sale { font-size: 18px; }
-      .collections-grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 40px; gap: 10px; }
-      .collection-card-name { font-size: 17px; }
-      .section-header { padding: 36px 16px 20px; }
-      .section-header h2 { font-size: clamp(28px, 8vw, 42px); }
-      .influenceur-text { padding: 32px 20px; }
-      .influenceur-text h2 { font-size: 36px; }
-      .influenceur-text p { font-size: 13px; }
-      .reviews-section { padding: 48px 16px; }
-      .reviews-grid { grid-template-columns: 1fr; gap: 12px; }
-      .footer-top { grid-template-columns: 1fr; padding: 36px 20px; gap: 28px; }
-      .footer-bottom { flex-direction: column; gap: 12px; padding: 20px; text-align: center; }
+
+    /* RESPONSIVE — MOBILE */
+    @media (max-width: 768px) {
+      /* NAV */
+      .nav-top { padding: 0 16px; height: 60px; }
+      .nav-logo { font-size: 20px; letter-spacing: 1.5px; }
+      .nav-cart { padding: 10px 16px; font-size: 12px; gap: 6px; }
+
+      /* TICKER plus compact */
+      .announcement { padding: 7px 0; }
+      .ticker span { font-size: 11px; letter-spacing: 1px; }
+
+      /* BARRE PROMO : cachée sur mobile, le ticker suffit */
+      .promo-bar { display: none; }
+
+      /* HERO */
+      .hero-banner img { max-height: 420px; object-position: center 20%; }
+      .hero-overlay {
+        padding: 28px 20px;
+        background: linear-gradient(to right, rgba(255,255,255,.92) 55%, transparent 100%);
+      }
+      .hero-tag { font-size: 10px; padding: 5px 12px; margin-bottom: 14px; }
+      .hero-title { font-size: 56px; line-height: .9; margin-bottom: 14px; }
+      .hero-sub { font-size: 13px; line-height: 1.5; margin-bottom: 22px; max-width: 240px; }
+      .hero-cta { padding: 14px 28px; font-size: 13px; letter-spacing: 1.5px; }
+
+      /* SECTION HEADER */
+      .section-header { padding: 32px 16px 20px; }
+      .section-header h2 { font-size: 30px; }
+      .section-header p { font-size: 13px; }
+
+      /* GRILLE PRODUITS */
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0; }
+      .product-info { padding: 12px 12px 14px; }
+      .product-brand { font-size: 9px; letter-spacing: 1.5px; }
+      .product-name { font-size: 14px; margin-bottom: 8px; }
+      .price-sale { font-size: 17px; }
+      .price-was { font-size: 12px; }
+      .price-save { font-size: 9px; padding: 2px 5px; }
+      .add-btn { opacity: 1 !important; transform: none !important; padding: 10px 8px; font-size: 10px; letter-spacing: .8px; margin-top: 10px; }
+      .badge-promo { font-size: 10px; padding: 3px 8px; top: 8px; left: 8px; }
+
+      /* COLLECTIONS */
+      .collections-grid { grid-template-columns: repeat(2, 1fr); padding: 0 14px 40px; gap: 10px; }
+      .collection-card { aspect-ratio: 4/5; }
+      .collection-card-name { font-size: 18px; }
+      .collection-card-cta { font-size: 10px; padding: 6px 12px; }
+
+      /* INFLUENCEUR */
+      .influenceur-img { height: 260px; }
+      .influenceur-text { padding: 36px 20px; }
+      .eyebrow { font-size: 10px; letter-spacing: 2.5px; margin-bottom: 14px; }
+      .influenceur-text h2 { font-size: 34px; margin-bottom: 18px; }
+      .influenceur-text p { font-size: 13px; line-height: 1.65; margin-bottom: 24px; }
+      .trust-badge { font-size: 13px; }
+      .influenceur-cta { font-size: 13px; padding: 14px 28px; }
+
+      /* AVIS */
+      .reviews-section { padding: 44px 16px 48px; }
+      .reviews-grid { grid-template-columns: 1fr; gap: 10px; }
+      .review-card { padding: 20px 18px; }
+      .review-text { font-size: 13px; }
+
+      /* PANIER DRAWER */
       .cart-drawer { width: 100%; }
-      .cart-checkout { padding: 18px; font-size: 15px; }
+      .cart-header { padding: 20px 20px; }
+      .cart-body { padding: 20px; }
+      .cart-footer { padding: 20px; }
+      .cart-checkout { font-size: 15px; padding: 17px; }
+      .cart-item-name { font-size: 15px; }
+
+      /* FOOTER */
+      .footer-top { grid-template-columns: 1fr; padding: 32px 20px; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 10px; padding: 18px 20px; text-align: center; }
+      .footer-brand-name { font-size: 18px; }
+      .footer-col h4 { font-size: 12px; margin-bottom: 14px; }
+      .footer-col li a { font-size: 12px; }
     }
-    @media (max-width: 375px) {
-      .products-grid { grid-template-columns: 1fr; }
+
+    /* TRÈS PETITS ÉCRANS */
+    @media (max-width: 380px) {
+      .hero-title { font-size: 46px; }
+      .nav-logo { font-size: 18px; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>

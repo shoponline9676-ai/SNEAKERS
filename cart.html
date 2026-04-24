@@ -137,25 +137,47 @@
       .hamburger { display: flex; }
       .nav-connexion { display: none; }
     }
-    @media (max-width: 640px) {
-      .nav-top { padding: 0 16px; height: 64px; }
-      .nav-logo { font-size: 21px; }
-      .nav-cart { padding: 9px 14px; font-size: 12px; }
-      .cart-layout { padding: 16px 12px 60px; gap: 16px; }
-      .cart-card { padding: 16px 14px; }
-      .summary-card { padding: 16px 14px; }
-      .cart-card-title { font-size: 18px; }
-      .cart-item { gap: 14px; padding: 16px 0; }
-      .cart-item-img { width: 86px; height: 86px; }
-      .cart-item-name { font-size: 16px; }
-      .qty-btn { width: 40px; height: 40px; font-size: 20px; }
-      .qty-val { width: 44px; height: 40px; font-size: 16px; }
-      .cart-item-price { font-size: 20px; }
-      .checkout-btn { padding: 18px; font-size: 16px; }
-      .steps { gap: 0; }
-      .step-sep { width: 20px; }
+    @media (max-width: 768px) {
+      /* NAV */
+      .nav-top { padding: 0 16px; height: 60px; }
+      .nav-logo { font-size: 20px; letter-spacing: 1.5px; }
+      .nav-cart { padding: 10px 16px; font-size: 12px; }
+      .announcement { padding: 7px 0; }
+
+      /* STEPS — compacts, juste les numéros + noms courts */
+      .checkout-steps { padding: 0 12px; }
+      .steps { padding: 14px 0; gap: 0; }
+      .step { gap: 6px; }
       .step span { font-size: 11px; }
-      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; padding: 20px; }
+      .step-num { width: 24px; height: 24px; font-size: 11px; }
+      .step-sep { width: 16px; }
+
+      /* LAYOUT */
+      .cart-layout { padding: 16px 12px 60px; gap: 14px; }
+      .cart-card { padding: 18px 14px; }
+      .cart-card-title { font-size: 18px; }
+      .summary-card { padding: 18px 14px; }
+      .summary-title { font-size: 17px; }
+
+      /* CART ITEMS */
+      .cart-item { gap: 14px; padding: 16px 0; }
+      .cart-item-img { width: 88px; height: 88px; flex-shrink: 0; }
+      .cart-item-brand { font-size: 9px; }
+      .cart-item-name { font-size: 16px; }
+      .cart-item-size { font-size: 11px; }
+      .qty-btn { width: 42px; height: 42px; font-size: 20px; }
+      .qty-val { width: 44px; height: 42px; font-size: 16px; }
+      .cart-item-price { font-size: 20px; }
+
+      /* SUMMARY */
+      .summary-row { font-size: 13px; }
+      .summary-row.total { font-size: 20px; }
+      .promo-input { font-size: 15px; padding: 13px 12px; }
+      .promo-apply { font-size: 12px; padding: 13px 14px; }
+      .checkout-btn { padding: 20px; font-size: 16px; letter-spacing: 1.5px; }
+
+      /* FOOTER */
+      .footer-bottom { flex-direction: column; gap: 10px; padding: 18px 20px; text-align: center; }
     }
   </style>
 </head>

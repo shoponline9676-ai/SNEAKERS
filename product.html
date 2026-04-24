@@ -146,28 +146,62 @@
       .hamburger { display: flex; }
       .nav-connexion { display: none; }
       .mobile-sticky { display: block; }
-      .product-layout { padding-bottom: 96px; }
     }
-    @media (max-width: 640px) {
-      .product-layout { padding: 20px 16px 96px; gap: 20px; }
-      .nav-top { padding: 0 16px; height: 64px; }
-      .nav-logo { font-size: 21px; }
-      .nav-cart { padding: 9px 14px; font-size: 12px; }
-      .breadcrumb { padding: 12px 16px; font-size: 12px; }
-      .detail-name { font-size: 30px; }
-      .detail-section { padding-top: 0; }
-      .detail-prices { gap: 10px; margin-bottom: 16px; padding-bottom: 16px; }
-      .price-sale { font-size: 30px; }
-      .detail-desc { font-size: 13px; margin-bottom: 20px; }
-      .thumbnails { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    @media (max-width: 768px) {
+      /* NAV */
+      .nav-top { padding: 0 16px; height: 60px; }
+      .nav-logo { font-size: 20px; letter-spacing: 1.5px; }
+      .nav-cart { padding: 10px 16px; font-size: 12px; }
+      .announcement { padding: 7px 0; }
+
+      /* BREADCRUMB */
+      .breadcrumb { padding: 10px 16px; font-size: 12px; }
+
+      /* LAYOUT */
+      .product-layout { padding: 16px 14px 100px; gap: 20px; }
+
+      /* GALLERY */
+      .main-img-wrap { border: none; }
+      .thumbnails { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 8px; }
       .thumbnails::-webkit-scrollbar { display: none; }
-      .thumb-btn { flex-shrink: 0; width: 72px; height: 72px; }
-      .size-btn { width: 50px; height: 50px; font-size: 15px; }
-      .size-grid { gap: 10px; }
-      .add-to-cart-btn { font-size: 16px; padding: 18px; }
-      .view-cart-link { font-size: 14px; padding: 14px; }
+      .thumb-btn { flex-shrink: 0; width: 70px; height: 70px; }
+      .badge-promo { font-size: 12px; padding: 5px 12px; top: 10px; left: 10px; }
+
+      /* DETAILS */
+      .detail-section { padding-top: 0; }
+      .detail-brand { font-size: 10px; letter-spacing: 2px; margin-bottom: 6px; }
+      .detail-name { font-size: 30px; margin-bottom: 16px; }
+      .detail-prices { gap: 10px; margin-bottom: 16px; padding-bottom: 16px; }
+      .price-sale { font-size: 28px; }
+      .price-was { font-size: 15px; }
+      .detail-desc { font-size: 13px; line-height: 1.7; margin-bottom: 24px; }
+
+      /* SIZE SELECTOR */
+      .size-section { margin-bottom: 22px; }
+      .size-label { font-size: 11px; margin-bottom: 12px; }
+      .size-grid { gap: 8px; }
+      .size-btn { width: 48px; height: 48px; font-size: 14px; }
+
+      /* CTA */
+      .add-to-cart-btn { padding: 18px; font-size: 16px; letter-spacing: 1.5px; margin-bottom: 10px; }
+      .view-cart-link { font-size: 13px; padding: 14px; margin-bottom: 22px; }
+
+      /* FEATURES */
+      .features-section { padding-top: 20px; }
+      .features-title { font-size: 12px; letter-spacing: 1.5px; margin-bottom: 14px; }
       .features-list li { font-size: 13px; }
-      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; padding: 20px; }
+
+      /* GUARANTEE */
+      .guarantee-badges { gap: 12px; margin-top: 20px; padding-top: 20px; }
+      .guarantee-badge { font-size: 11px; }
+
+      /* STICKY */
+      .mobile-sticky { padding: 10px 14px; }
+      .mobile-sticky-price { font-size: 20px; }
+      .mobile-sticky-btn { font-size: 14px; padding: 14px; letter-spacing: 1.5px; }
+
+      /* FOOTER */
+      .footer-bottom { flex-direction: column; gap: 10px; padding: 18px 20px; text-align: center; }
     }
   </style>
 </head>
