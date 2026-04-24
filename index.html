@@ -271,7 +271,7 @@
 
 <div class="products-grid">
 
-  <div class="product-card" onclick="addToCart('OMNI 9 SAUMON','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=omni9-saumon'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/saumon1.png?v=1765834464&width=533" alt="OMNI 9 SAUMON" />
@@ -289,7 +289,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('OMNI 9 TRICOLOR','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=omni9-tricolor'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/IMG-0075.png?v=1765923654&width=533" alt="OMNI 9 TRICOLOR" />
@@ -307,7 +307,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('S X M VANILLA ICE','99,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=sxm-vanilla-ice'">
     <div class="product-img-wrap">
       <span class="badge-promo">−47%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/IMG-0221.png?v=1768000279&width=533" alt="S X M VANILLA ICE" />
@@ -325,7 +325,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('OMNI 9 BLACK AND GREY','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=omni9-black-grey'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/silver.png?v=1765840089&width=533" alt="OMNI 9 BLACK AND GREY" />
@@ -343,7 +343,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('GEL KAYANO 14','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=gel-kayano-14'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/asics1.png?v=1765892475&width=533" alt="GEL KAYANO 14" />
@@ -361,7 +361,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('OMNI 9 MIAMI','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=omni9-miami'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/miami.png?v=1765838866&width=533" alt="OMNI 9 MIAMI" />
@@ -379,7 +379,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('GEL KAYANO 14 BLUE GLOW','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=gel-kayano-14-blue-glow'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/IMG-0158.png?v=1766433213&width=533" alt="GEL KAYANO BLUE GLOW" />
@@ -397,7 +397,7 @@
     </div>
   </div>
 
-  <div class="product-card" onclick="addToCart('OMNI 9 TROPICAL BLUE','79,99 €',this)">
+  <div class="product-card" onclick="window.location.href='product.html?id=omni9-tropical-blue'">
     <div class="product-img-wrap">
       <span class="badge-promo">−50%</span>
       <img class="img-main" src="https://sneakerworld.fr/cdn/shop/files/green.png?v=1765842389&width=533" alt="OMNI 9 TROPICAL BLUE" />
@@ -568,51 +568,43 @@
   </div>
   <div class="cart-footer">
     <div class="cart-total"><span>Total</span><span id="cart-total">0,00 €</span></div>
-    <button class="cart-checkout">Procéder au paiement →</button>
+    <a href="cart.html" class="cart-checkout" style="display:block;text-align:center;">Procéder au paiement →</a>
   </div>
 </div>
 
 <!-- NOTIF -->
 <div class="notif" id="notif"></div>
 
+<script src="products-data.js"></script>
 <script>
-  let cart = [];
-
   function toggleCart() {
     const drawer = document.getElementById('cart-drawer');
     const overlay = document.getElementById('cart-overlay');
     const isOpen = drawer.classList.contains('open');
     drawer.classList.toggle('open', !isOpen);
     overlay.classList.toggle('open', !isOpen);
+    if (!isOpen) renderCartDrawer();
   }
 
-  function addToCart(name, price, cardEl) {
-    const imgSrc = cardEl ? cardEl.querySelector('.img-main')?.src : '';
-    const existing = cart.find(i => i.name === name);
-    if (existing) { existing.qty++; }
-    else { cart.push({ name, price, imgSrc, qty: 1 }); }
-    updateCart();
-    showNotif('✓ ' + name + ' ajouté au panier');
-  }
-
-  function updateCart() {
-    const count = cart.reduce((a, i) => a + i.qty, 0);
-    document.getElementById('cart-count').textContent = count;
+  function renderCartDrawer() {
+    const cart = Cart.get();
     const emptyEl = document.getElementById('cart-empty');
     const itemsEl = document.getElementById('cart-items');
     emptyEl.style.display = cart.length ? 'none' : 'block';
     itemsEl.innerHTML = cart.map(item => `
       <div class="cart-item">
-        <img class="cart-item-img" src="${item.imgSrc}" alt="${item.name}" />
+        <img class="cart-item-img" src="${item.img}" alt="${item.name}" />
         <div>
           <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">${item.price} × ${item.qty}</div>
+          <div class="cart-item-price">${fmtPrice(item.price)} × ${item.qty}</div>
+          <div style="font-size:11px;color:var(--mid)">EU ${item.size}</div>
         </div>
       </div>
     `).join('');
-    const total = cart.reduce((a, i) => a + parseFloat(i.price.replace(',', '.')) * i.qty, 0);
-    document.getElementById('cart-total').textContent = total.toFixed(2).replace('.', ',') + ' €';
+    document.getElementById('cart-total').textContent = fmtPrice(Cart.total());
   }
+
+  function fmtPrice(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
 
   function showNotif(msg) {
     const n = document.getElementById('notif');
@@ -620,6 +612,10 @@
     n.classList.add('show');
     setTimeout(() => n.classList.remove('show'), 2800);
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    Cart.updateCount();
+  });
 </script>
 </body>
 </html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paiement — SNEAKERS WORLD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --white: #fff;
+      --off: #f4f3f1;
+      --light: #eeede9;
+      --black: #111;
+      --dark: #1c1c1c;
+      --mid: #888;
+      --border: #e0deda;
+      --red: #e53030;
+      --gold: #f0c040;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--off); color: var(--black); font-family: 'Barlow', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+
+    /* TICKER */
+    .announcement { background: var(--black); color: #fff; overflow: hidden; padding: 8px 0; }
+    .ticker-wrap { display: flex; overflow: hidden; }
+    .ticker { display: flex; gap: 80px; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker span { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+    .ticker span em { color: var(--gold); font-style: normal; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* NAV */
+    nav { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
+    .nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; }
+    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; }
+    .nav-logo span { color: var(--red); }
+    .nav-center { display: flex; }
+    .nav-center a { font-size: 13px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; padding: 26px 18px; border-bottom: 2px solid transparent; transition: border-color .2s; }
+    .nav-center a:hover { border-bottom-color: var(--black); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-right a { font-size: 13px; font-weight: 500; color: var(--mid); transition: color .2s; }
+    .nav-cart { background: var(--black); color: #fff !important; padding: 10px 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .cart-count { background: var(--red); color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; }
+
+    /* PROGRESS STEPS */
+    .checkout-steps { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; }
+    .steps { display: flex; align-items: center; justify-content: center; max-width: 600px; margin: 0 auto; padding: 20px 0; }
+    .step { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--mid); }
+    .step.active { color: var(--black); }
+    .step.done { color: var(--red); }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .step.active .step-num { background: var(--black); color: #fff; border-color: var(--black); }
+    .step.done .step-num { background: var(--red); color: #fff; border-color: var(--red); }
+    .step-sep { width: 60px; height: 1px; background: var(--border); margin: 0 8px; flex-shrink: 0; }
+
+    /* LAYOUT */
+    .checkout-layout { max-width: 1160px; margin: 0 auto; padding: 40px 40px 80px; display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
+
+    /* FORM CARDS */
+    .form-card { background: var(--white); padding: 32px; }
+    .form-card h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .form-group label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--dark); }
+    .form-group input, .form-group select { border: 1.5px solid var(--border); padding: 13px 16px; font-size: 14px; font-family: 'Barlow', sans-serif; outline: none; transition: border-color .2s; background: var(--white); color: var(--black); }
+    .form-group input:focus, .form-group select:focus { border-color: var(--black); }
+    .form-group select { cursor: pointer; }
+
+    /* CONTINUE BUTTON */
+    .continue-btn { width: 100%; background: var(--black); color: #fff; border: none; padding: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s; margin-top: 8px; display: block; }
+    .continue-btn:hover { background: var(--red); }
+
+    /* PAYMENT FORM */
+    .secure-info { font-size: 12px; color: var(--mid); display: flex; align-items: center; gap: 8px; margin: 16px 0; padding: 14px; background: var(--off); border: 1px solid var(--border); }
+    #stripe-card-element { border: 1.5px solid var(--border); padding: 14px 16px; background: var(--white); transition: border-color .2s; }
+    #stripe-card-element.StripeElement--focus { border-color: var(--black); }
+    #stripe-card-element.StripeElement--invalid { border-color: var(--red); }
+    .card-error { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 20px; }
+    .order-btn { width: 100%; background: var(--red); color: #fff; border: none; padding: 22px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s; margin-top: 4px; display: block; }
+    .order-btn:hover:not(:disabled) { background: #c72020; }
+    .order-btn:disabled { opacity: .6; cursor: not-allowed; }
+    .back-link { font-size: 13px; color: var(--mid); cursor: pointer; display: inline-block; margin-bottom: 20px; transition: color .2s; }
+    .back-link:hover { color: var(--black); }
+
+    /* CONFIRMATION */
+    .confirmation-card { text-align: center; padding: 60px 40px; }
+    .confirm-icon { font-size: 64px; margin-bottom: 24px; }
+    .confirmation-card h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; text-transform: uppercase; margin-bottom: 16px; }
+    .confirmation-card p { font-size: 15px; color: var(--mid); margin-bottom: 20px; line-height: 1.7; }
+    .order-number { background: var(--off); border: 1px solid var(--border); padding: 16px 24px; display: inline-block; margin-bottom: 32px; font-size: 14px; font-weight: 600; }
+    .back-to-shop-btn { display: inline-block; background: var(--black); color: #fff; padding: 16px 40px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; transition: background .2s; }
+    .back-to-shop-btn:hover { background: var(--red); }
+
+    /* ORDER SUMMARY */
+    .summary-card { background: var(--white); padding: 28px; height: fit-content; position: sticky; top: 90px; }
+    .summary-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
+    .summary-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .summary-item:last-of-type { border-bottom: none; }
+    .summary-item-img-wrap { position: relative; flex-shrink: 0; }
+    .summary-item-img-wrap img { width: 64px; height: 64px; object-fit: cover; background: var(--off); display: block; }
+    .summary-item-qty { position: absolute; top: -8px; right: -8px; background: var(--black); color: #fff; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .summary-item-info { flex: 1; }
+    .summary-item-name { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; }
+    .summary-item-size { font-size: 11px; color: var(--mid); margin-top: 2px; }
+    .summary-item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; white-space: nowrap; }
+    .summary-divider { height: 1px; background: var(--border); margin: 16px 0; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; }
+    .summary-row.total { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--black); margin-bottom: 0; }
+    .summary-row .label { color: var(--mid); }
+    .summary-row.total .label, .summary-row.total .value { color: var(--black); }
+    .free-ship { color: #22c55e; font-weight: 600; }
+    .promo-discount { color: var(--red); font-weight: 600; }
+
+    /* FOOTER */
+    footer { background: var(--black); color: rgba(255,255,255,.7); }
+    .footer-bottom { padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
+    .footer-logo span { color: var(--red); }
+    .footer-bottom p { font-size: 12px; }
+    .payment-icons { display: flex; gap: 8px; }
+    .pay-icon { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; }
+
+    @media (max-width: 1024px) {
+      .checkout-layout { grid-template-columns: 1fr; }
+      .summary-card { position: static; }
+      .nav-center { display: none; }
+    }
+    @media (max-width: 640px) {
+      .checkout-layout { padding: 20px 16px 60px; }
+      .form-card { padding: 20px 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .steps { gap: 0; }
+      .step-sep { width: 24px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="announcement">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>🔥 <em>-10% avec le code BIENVENU10</em></span>
+      <span>📦 Livraison offerte</span>
+      <span>⭐ +500 clients satisfaits</span>
+      <span>🔒 Paiement 100% sécurisé</span>
+      <span>🔥 <em>-10% avec le code BIENVENU10</em></span>
+      <span>📦 Livraison offerte</span>
+      <span>⭐ +500 clients satisfaits</span>
+      <span>🔒 Paiement 100% sécurisé</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a class="nav-logo" href="index.html">SNEAKERS <span>WORLD</span></a>
+    <div class="nav-center">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#best-sellers">Collections</a>
+      <a href="cart.html">Panier</a>
+    </div>
+    <div class="nav-right">
+      <a href="#">Connexion</a>
+      <a href="cart.html" class="nav-cart">
+        🛒 Panier <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- STEPS -->
+<div class="checkout-steps">
+  <div class="steps">
+    <div class="step done">
+      <div class="step-num">✓</div>
+      <span>Panier</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step" id="step-2-el">
+      <div class="step-num">2</div>
+      <span>Livraison</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step" id="step-3-el">
+      <div class="step-num">3</div>
+      <span>Paiement</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step" id="step-4-el">
+      <div class="step-num">4</div>
+      <span>Confirmation</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="checkout-layout" id="checkout-layout">
+
+  <!-- LEFT COLUMN -->
+  <div>
+
+    <!-- STEP 2: LIVRAISON -->
+    <div id="section-shipping" class="form-card">
+      <h2>Adresse de livraison</h2>
+      <form id="form-shipping" onsubmit="goToPayment(event)" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prénom *</label>
+            <input type="text" id="s-first" required placeholder="Jean" />
+          </div>
+          <div class="form-group">
+            <label>Nom *</label>
+            <input type="text" id="s-last" required placeholder="Dupont" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>E-mail *</label>
+          <input type="email" id="s-email" required placeholder="jean@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="s-phone" placeholder="+33 6 00 00 00 00" />
+        </div>
+        <div class="form-group">
+          <label>Adresse *</label>
+          <input type="text" id="s-address" required placeholder="12 rue de la Paix" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Code postal *</label>
+            <input type="text" id="s-zip" required placeholder="75001" />
+          </div>
+          <div class="form-group">
+            <label>Ville *</label>
+            <input type="text" id="s-city" required placeholder="Paris" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Pays</label>
+          <select id="s-country">
+            <option value="FR">France</option>
+            <option value="BE">Belgique</option>
+            <option value="CH">Suisse</option>
+            <option value="CA">Canada</option>
+            <option value="LU">Luxembourg</option>
+          </select>
+        </div>
+        <button type="submit" class="continue-btn">Continuer vers le paiement →</button>
+      </form>
+    </div>
+
+    <!-- STEP 3: PAIEMENT (hidden) -->
+    <div id="section-payment" class="form-card" style="display:none">
+      <span class="back-link" onclick="goBackToShipping()">← Modifier la livraison</span>
+      <h2>Paiement sécurisé</h2>
+
+      <div class="secure-info">
+        🔒 Vos données de paiement sont chiffrées et traitées par Stripe. Nous n'avons jamais accès à vos informations bancaires.
+      </div>
+
+      <form id="form-payment" onsubmit="placeOrder(event)" novalidate>
+        <div class="form-group">
+          <label>Numéro de carte *</label>
+          <div id="stripe-card-element"></div>
+          <div class="card-error" id="card-error"></div>
+        </div>
+        <button type="submit" class="order-btn" id="order-btn">
+          🔒 Confirmer et payer — <span id="pay-total">0,00 €</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- STEP 4: CONFIRMATION (hidden) -->
+    <div id="section-confirmation" class="form-card confirmation-card" style="display:none">
+      <div class="confirm-icon">✅</div>
+      <h2>Commande confirmée !</h2>
+      <p>Merci pour votre commande. Un e-mail de confirmation vous a été envoyé à <strong id="confirm-email"></strong>.</p>
+      <div class="order-number">Commande n° <strong id="order-number"></strong></div>
+      <a href="index.html" class="back-to-shop-btn">Continuer mes achats</a>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN: ORDER SUMMARY -->
+  <div class="summary-card" id="summary-card">
+    <div class="summary-title">Récapitulatif</div>
+    <div id="summary-items"></div>
+    <div class="summary-divider"></div>
+    <div class="summary-row">
+      <span class="label">Sous-total</span>
+      <span id="sum-subtotal">0,00 €</span>
+    </div>
+    <div class="summary-row" id="sum-discount-row" style="display:none">
+      <span class="label">Code promo</span>
+      <span class="promo-discount" id="sum-discount"></span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Livraison</span>
+      <span class="free-ship">Offerte</span>
+    </div>
+    <div class="summary-row total">
+      <span class="label">Total</span>
+      <span id="sum-total">0,00 €</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-logo">SNEAKERS <span>WORLD</span></div>
+    <p>© 2025 Sneakers World — Tous droits réservés</p>
+    <div class="payment-icons">
+      <div class="pay-icon">VISA</div>
+      <div class="pay-icon">MC</div>
+      <div class="pay-icon">PAYPAL</div>
+      <div class="pay-icon">AMEX</div>
+    </div>
+  </div>
+</footer>
+
+<script src="products-data.js"></script>
+<script>
+  const STRIPE_PUBLIC_KEY = 'REPLACE_WITH_YOUR_STRIPE_PUBLIC_KEY';
+  let stripeInstance = null;
+  let cardElement = null;
+  let currentStep = 2;
+  let shippingData = {};
+
+  document.addEventListener('DOMContentLoaded', () => {
+    Cart.updateCount();
+    renderSummary();
+    setStep(2);
+
+    if (STRIPE_PUBLIC_KEY !== 'REPLACE_WITH_YOUR_STRIPE_PUBLIC_KEY') {
+      stripeInstance = Stripe(STRIPE_PUBLIC_KEY);
+    }
+  });
+
+  function setStep(n) {
+    currentStep = n;
+    const steps = [
+      { id: 'step-2-el', num: 2 },
+      { id: 'step-3-el', num: 3 },
+      { id: 'step-4-el', num: 4 }
+    ];
+    steps.forEach(s => {
+      const el = document.getElementById(s.id);
+      el.className = 'step';
+      if (s.num < n) el.classList.add('done');
+      if (s.num === n) el.classList.add('active');
+    });
+  }
+
+  function renderSummary() {
+    const cart = Cart.get();
+    const itemsEl = document.getElementById('summary-items');
+
+    if (!cart.length) {
+      itemsEl.innerHTML = '<p style="color:var(--mid);font-size:13px">Panier vide</p>';
+      return;
+    }
+
+    itemsEl.innerHTML = cart.map(item => `
+      <div class="summary-item">
+        <div class="summary-item-img-wrap">
+          <img src="${item.img}" alt="${item.name}" />
+          <span class="summary-item-qty">${item.qty}</span>
+        </div>
+        <div class="summary-item-info">
+          <div class="summary-item-name">${item.name}</div>
+          <div class="summary-item-size">EU ${item.size}</div>
+        </div>
+        <div class="summary-item-price">${fmtPrice(item.price * item.qty)}</div>
+      </div>
+    `).join('');
+
+    const savedPromo = JSON.parse(localStorage.getItem('sw_promo') || 'null');
+    const sub = Cart.total();
+    const discount = savedPromo ? sub * savedPromo.rate : 0;
+    const total = sub - discount;
+
+    document.getElementById('sum-subtotal').textContent = fmtPrice(sub);
+    document.getElementById('sum-total').textContent = fmtPrice(total);
+    document.getElementById('pay-total').textContent = fmtPrice(total);
+
+    if (discount > 0) {
+      document.getElementById('sum-discount-row').style.display = 'flex';
+      document.getElementById('sum-discount').textContent = '−' + fmtPrice(discount);
+    }
+  }
+
+  function goToPayment(e) {
+    e.preventDefault();
+    const first = document.getElementById('s-first').value.trim();
+    const last = document.getElementById('s-last').value.trim();
+    const email = document.getElementById('s-email').value.trim();
+    const address = document.getElementById('s-address').value.trim();
+    const zip = document.getElementById('s-zip').value.trim();
+    const city = document.getElementById('s-city').value.trim();
+
+    if (!first || !last || !email || !address || !zip || !city) {
+      alert('Veuillez remplir tous les champs obligatoires.');
+      return;
+    }
+
+    shippingData = {
+      name: first + ' ' + last,
+      email,
+      phone: document.getElementById('s-phone').value.trim(),
+      address,
+      zip,
+      city,
+      country: document.getElementById('s-country').value
+    };
+
+    document.getElementById('section-shipping').style.display = 'none';
+    document.getElementById('section-payment').style.display = 'block';
+    setStep(3);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (stripeInstance) {
+      const elements = stripeInstance.elements();
+      cardElement = elements.create('card', {
+        style: {
+          base: {
+            fontFamily: '"Barlow", sans-serif',
+            fontSize: '15px',
+            color: '#111',
+            '::placeholder': { color: '#aaa' }
+          },
+          invalid: { color: '#e53030' }
+        }
+      });
+      cardElement.mount('#stripe-card-element');
+      cardElement.on('change', e => {
+        document.getElementById('card-error').textContent = e.error ? e.error.message : '';
+      });
+    } else {
+      document.getElementById('stripe-card-element').innerHTML =
+        '<p style="color:var(--mid);font-size:13px;padding:14px 0">⚠ Stripe non configuré. Ajoutez votre clé publique Stripe dans checkout.html.</p>';
+    }
+  }
+
+  function goBackToShipping() {
+    document.getElementById('section-payment').style.display = 'none';
+    document.getElementById('section-shipping').style.display = 'block';
+    setStep(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function placeOrder(e) {
+    e.preventDefault();
+    if (!stripeInstance || !cardElement) {
+      alert('Stripe non configuré. Veuillez ajouter votre clé publique Stripe.');
+      return;
+    }
+
+    const btn = document.getElementById('order-btn');
+    btn.disabled = true;
+    btn.textContent = 'Traitement en cours…';
+
+    try {
+      const savedPromo = JSON.parse(localStorage.getItem('sw_promo') || 'null');
+      const sub = Cart.total();
+      const discount = savedPromo ? sub * savedPromo.rate : 0;
+      const total = Math.round((sub - discount) * 100);
+
+      const response = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: total,
+          currency: 'eur',
+          shipping: shippingData,
+          items: Cart.get().map(i => ({ name: i.name, size: i.size, qty: i.qty, price: i.price }))
+        })
+      });
+
+      if (!response.ok) throw new Error('Erreur serveur');
+      const { clientSecret } = await response.json();
+
+      const result = await stripeInstance.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: shippingData.name,
+            email: shippingData.email,
+            address: {
+              line1: shippingData.address,
+              city: shippingData.city,
+              postal_code: shippingData.zip,
+              country: shippingData.country
+            }
+          }
+        }
+      });
+
+      if (result.error) {
+        document.getElementById('card-error').textContent = result.error.message;
+        btn.disabled = false;
+        btn.innerHTML = '🔒 Confirmer et payer — ' + document.getElementById('pay-total').textContent;
+      } else {
+        showConfirmation();
+      }
+    } catch (err) {
+      document.getElementById('card-error').textContent = 'Une erreur est survenue. Veuillez réessayer.';
+      btn.disabled = false;
+      btn.innerHTML = '🔒 Confirmer et payer — ' + document.getElementById('pay-total').textContent;
+    }
+  }
+
+  function showConfirmation() {
+    const orderNum = 'SW-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    document.getElementById('confirm-email').textContent = shippingData.email;
+    document.getElementById('order-number').textContent = orderNum;
+    document.getElementById('section-payment').style.display = 'none';
+    document.getElementById('section-confirmation').style.display = 'block';
+    document.getElementById('summary-card').style.display = 'none';
+    setStep(4);
+    Cart.clear();
+    localStorage.removeItem('sw_promo');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function fmtPrice(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+</script>
+</body>
+</html>
