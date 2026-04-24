@@ -171,6 +171,28 @@
     .notif { position: fixed; bottom: 30px; right: 30px; background: var(--black); color: #fff; padding: 16px 24px; font-size: 14px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .35s ease; z-index: 1000; border-left: 4px solid var(--red); }
     .notif.show { transform: translateY(0); opacity: 1; }
 
+    /* HAMBURGER */
+    .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; flex-shrink: 0; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--black); transition: all .25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE MENU */
+    .mob-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 400; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .mob-overlay.open { opacity: 1; pointer-events: all; }
+    .mob-menu { position: fixed; top: 0; left: 0; bottom: 0; width: 290px; background: var(--white); z-index: 500; transform: translateX(-100%); transition: transform .35s ease; display: flex; flex-direction: column; }
+    .mob-menu.open { transform: translateX(0); }
+    .mob-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+    .mob-head-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 2px; text-transform: uppercase; }
+    .mob-head-logo span { color: var(--red); }
+    .mob-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--mid); line-height: 1; padding: 4px; }
+    .mob-links { flex: 1; overflow-y: auto; }
+    .mob-links a { display: flex; align-items: center; padding: 20px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); transition: background .15s; }
+    .mob-links a:active { background: var(--off); }
+    .mob-cart-badge { background: var(--red); color: #fff; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; margin-left: 10px; }
+    .mob-footer-bar { padding: 16px 24px; border-top: 1px solid var(--border); font-size: 11px; color: var(--mid); text-align: center; }
+
     /* RESPONSIVE */
     @media (max-width: 1024px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); }
@@ -180,19 +202,40 @@
       .influenceur-section { grid-template-columns: 1fr; }
       .influenceur-img { height: 320px; }
       .nav-center { display: none; }
+      .hamburger { display: flex; }
+      .nav-connexion { display: none; }
     }
     @media (max-width: 640px) {
-      .nav-top { padding: 0 20px; }
-      .hero-overlay { padding: 40px 24px; }
+      .nav-top { padding: 0 16px; height: 64px; }
+      .nav-logo { font-size: 21px; }
+      .nav-cart { padding: 9px 14px; font-size: 12px; }
+      .hero-overlay { padding: 28px 20px; }
+      .hero-title { font-size: clamp(44px, 12vw, 70px); }
+      .hero-sub { font-size: 13px; margin-bottom: 24px; }
+      .hero-cta { padding: 14px 28px; font-size: 13px; }
       .promo-bar { flex-direction: column; }
-      .promo-item { border-right: none; border-bottom: 1px solid var(--border); justify-content: center; padding: 14px 24px; }
-      .collections-grid { padding: 0 16px 40px; gap: 10px; }
-      .section-header { padding: 40px 20px 24px; }
-      .footer-top { grid-template-columns: 1fr; padding: 40px 20px; gap: 32px; }
+      .promo-item { border-right: none; border-bottom: 1px solid var(--border); justify-content: center; padding: 12px 20px; font-size: 12px; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .add-btn { opacity: 1 !important; transform: none !important; padding: 11px 8px; font-size: 11px; letter-spacing: .8px; }
+      .product-info { padding: 14px 14px 16px; }
+      .product-name { font-size: 15px; }
+      .price-sale { font-size: 18px; }
+      .collections-grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 40px; gap: 10px; }
+      .collection-card-name { font-size: 17px; }
+      .section-header { padding: 36px 16px 20px; }
+      .section-header h2 { font-size: clamp(28px, 8vw, 42px); }
+      .influenceur-text { padding: 32px 20px; }
+      .influenceur-text h2 { font-size: 36px; }
+      .influenceur-text p { font-size: 13px; }
+      .reviews-section { padding: 48px 16px; }
+      .reviews-grid { grid-template-columns: 1fr; gap: 12px; }
+      .footer-top { grid-template-columns: 1fr; padding: 36px 20px; gap: 28px; }
       .footer-bottom { flex-direction: column; gap: 12px; padding: 20px; text-align: center; }
-      .influenceur-text { padding: 40px 24px; }
       .cart-drawer { width: 100%; }
-      .reviews-section { padding: 60px 20px; }
+      .cart-checkout { padding: 18px; font-size: 15px; }
+    }
+    @media (max-width: 375px) {
+      .products-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -236,13 +279,31 @@
       <a href="#">Profil</a>
     </div>
     <div class="nav-right">
-      <a href="#">Connexion</a>
+      <a href="#" class="nav-connexion">Connexion</a>
       <button class="nav-cart" onclick="toggleCart()">
         🛒 Panier <span class="cart-count" id="cart-count">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-overlay" id="mob-overlay" onclick="toggleMobileMenu()"></div>
+<div class="mob-menu" id="mob-menu">
+  <div class="mob-head">
+    <div class="mob-head-logo">SNEAKERS <span>WORLD</span></div>
+    <button class="mob-close" onclick="toggleMobileMenu()">✕</button>
+  </div>
+  <div class="mob-links">
+    <a href="index.html">Accueil</a>
+    <a href="index.html#best-sellers">Collections</a>
+    <a href="cart.html">Mon Panier <span class="mob-cart-badge" id="mob-cart-count">0</span></a>
+  </div>
+  <div class="mob-footer-bar">🔒 Paiement sécurisé &nbsp;·&nbsp; 📦 Livraison offerte</div>
+</div>
 
 <!-- HERO BANNER -->
 <section class="hero-banner">
@@ -613,8 +674,22 @@
     setTimeout(() => n.classList.remove('show'), 2800);
   }
 
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mob-menu');
+    const overlay = document.getElementById('mob-overlay');
+    const burger = document.getElementById('hamburger');
+    const isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open', !isOpen);
+    overlay.classList.toggle('open', !isOpen);
+    burger.classList.toggle('open', !isOpen);
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     Cart.updateCount();
+    const c = Cart.count();
+    const badge = document.getElementById('mob-cart-count');
+    if (badge) { badge.textContent = c; badge.style.display = c > 0 ? 'flex' : 'none'; }
   });
 </script>
 </body>
